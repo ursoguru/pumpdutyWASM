@@ -2,7 +2,7 @@
 <pumps xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
     <model>
         <id>VMS1</id>
-        <model_groups>
+         <model_groups>
             <id>VMS1-20 Range</id>
             <v380>VMS1-20</v380>
             <v220>VMS1-20S</v220>
@@ -172,7 +172,7 @@
                <head>26</head>
             </flow>
          </model_groups>
-          <model_groups>
+         <model_groups>
             <id>VMS1-70 Range</id>
             <v380>VMS1-70</v380>
             <v220>VMS1-70S</v220>
@@ -760,9 +760,9 @@
     <model>
         <id>VMS8</id>
         <model_groups>
-            <id>VMS8-20/1 Range</id>
-            <v380>VMS8-20/1</v380>
-            <v220>VMS8-20/15</v220>
+            <id>VMS8-20-1 Range</id>
+            <v380>VMS8-20-1</v380>
+            <v220>VMS8-20-15</v220>
             <kw>0.75</kw>
             <flow>
                 <m3h>6</m3h>
