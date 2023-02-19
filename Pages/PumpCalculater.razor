@@ -284,173 +284,175 @@
 
 @code {
 
-    XDocument xDocument = new XDocument();
-    // StreamReader streamReader = new StreamReader(@"bosterpumps.xml");
-    List<Model>? models = new List<Model>();
-    String holdRaw = "empty";
+        XDocument xDocument = new XDocument();
+        // StreamReader streamReader = new StreamReader(@"bosterpumps.xml");
+        List<Model>? models = new List<Model>();
+        List<Model>? models1 = new List<Model>();
+        String holdRaw = "empty";
+        Boolean pumpStuctCreated = false;
 
-    protected override async Task OnInitializedAsync()
-    {
-        await fetchXML();
-        calculateDuty();
-        // await base.OnInitializedAsync();
-    }
-
-    protected async Task fetchXML()
-    {
-
-        holdRaw = await Http.GetStringAsync("sample-data/bosterpumps.xml");
-
-        /* //StreamReader streamReader = new StreamReader("sample-data/bosterpumps.xml");
-         string filename = @"sample-data/bosterpumps.xml";
-         byte[] result;
-
-         using (FileStream SourceStream = File.Open(filename, FileMode.Open))
-         {
-             result = new byte[SourceStream.Length];
-             await SourceStream.ReadAsync(result, 0, (int)SourceStream.Length);
-         }
-
-         Console.WriteLine(System.Text.Encoding.ASCII.GetString(result));*/
-
-
-        // xDocument = await XDocument.LoadAsync(streamReader, LoadOptions.None, CancellationToken.None);
-    }
-
-
-
-
-    List<int> apartments = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
-    List<int> stories = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-    List<int> sinks = new List<int>() { 0, 1, 2, 3, 4 };
-    List<int> dishwashers = new List<int>() { 0, 1, 2, 3 };
-    List<int> washingmachines = new List<int>() { 0, 1, 2, 3, 4 };
-    List<int> showers = new List<int>() { 0, 1, 2, 3, 4 };
-    List<int> bathtubs = new List<int>() { 0, 1, 2, 3, 4 };
-    List<int> washbasins = new List<int>() { 0, 1, 2, 3, 4, 5 };
-    List<int> bidets = new List<int>() { 0, 1, 2 };
-
-    public string pipewidtherror = "";
-    public string pipelengtherror = "";
-
-
-
-    // enum Toilets { FC1, FM1, FC2, FM2 };
-
-    List<string> toilets = new List<string>() { "1 x Flush tank / Cistern", "1 x Flush Master", "2 x Flush tank / Cistern", "2 x Flush Masters" };
-    List<string> pipes = new List<string>() { "Steel Pipe ( New )", "Steel Pipe ( old )", "UPVC Pipe", "Asbestos cement" };
-    //string selectedString = "China";
-    // string selectedValue = "10";
-    // int newValue;
-
-    private int currentCount = 0;
-
-    struct PumpDuty
-    {
-        public float flow;
-        public float head;
-    }
-
-    PumpDuty pumpDuty = new PumpDuty();
-
-
-    struct PumpSelections
-    {
-        public int apartments;
-        public int stories;
-        public int sinks;
-        public int dishwashers;
-        public int washingmachines;
-        public int showers;
-        public int bathtubs;
-        public int washbasins;
-        public int bidets;
-        public string toilet;
-        public string pipe;
-        public float pipewidth;
-        public float pipelength;
-
-
-        public PumpSelections(int ten, int two, int one, int zero, string toiletSystem, string pipeSystem, float pipeW, float pipeL)
+        protected override async Task OnInitializedAsync()
         {
-            apartments = ten;
-            stories = two;
-            sinks = two;
-            dishwashers = one;
-            washingmachines = one;
-            showers = one;
-            bathtubs = one;
-            washbasins = two;
-            bidets = zero;
-            toilet = toiletSystem;
-            pipe = pipeSystem;
-            pipelength = pipeL;
-            pipewidth = pipeW;
-
+            await fetchXML();
+            calculateDuty();
+            // await base.OnInitializedAsync();
         }
-    }
 
-    struct PumpsChosenDisplayed
-    {
-        public string model;
-        public string v380;
-        public string v220;
-        public string kw;
-    }
+        protected async Task fetchXML()
+        {
 
-    PumpsChosenDisplayed[] pumpsChosenDisplayed = new PumpsChosenDisplayed[30];
+            holdRaw = await Http.GetStringAsync("sample-data/bosterpumps.xml");
 
+            /* //StreamReader streamReader = new StreamReader("sample-data/bosterpumps.xml");
+             string filename = @"sample-data/bosterpumps.xml";
+             byte[] result;
 
-    struct PumpsChosen
-    {
-        public string model;
-        public string v380;
-        public string v220;
-        public string kw;
-    }
+             using (FileStream SourceStream = File.Open(filename, FileMode.Open))
+             {
+                 result = new byte[SourceStream.Length];
+                 await SourceStream.ReadAsync(result, 0, (int)SourceStream.Length);
+             }
+
+             Console.WriteLine(System.Text.Encoding.ASCII.GetString(result));*/
 
 
+            // xDocument = await XDocument.LoadAsync(streamReader, LoadOptions.None, CancellationToken.None);
+        }
 
-    PumpsChosen pumpsChosen = new PumpsChosen();
 
-    float[,] boosterPerformance = new float[,]
-         { { 0.6F, 0.8F,   1.0F,  1.2F,  1.4F, 1.6F, 1.8F,},
+
+
+        List<int> apartments = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+        List<int> stories = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+        List<int> sinks = new List<int>() { 0, 1, 2, 3, 4 };
+        List<int> dishwashers = new List<int>() { 0, 1, 2, 3 };
+        List<int> washingmachines = new List<int>() { 0, 1, 2, 3, 4 };
+        List<int> showers = new List<int>() { 0, 1, 2, 3, 4 };
+        List<int> bathtubs = new List<int>() { 0, 1, 2, 3, 4 };
+        List<int> washbasins = new List<int>() { 0, 1, 2, 3, 4, 5 };
+        List<int> bidets = new List<int>() { 0, 1, 2 };
+
+        public string pipewidtherror = "";
+        public string pipelengtherror = "";
+
+
+
+        // enum Toilets { FC1, FM1, FC2, FM2 };
+
+        List<string> toilets = new List<string>() { "1 x Flush tank / Cistern", "1 x Flush Master", "2 x Flush tank / Cistern", "2 x Flush Masters" };
+        List<string> pipes = new List<string>() { "Steel Pipe ( New )", "Steel Pipe ( old )", "UPVC Pipe", "Asbestos cement" };
+        //string selectedString = "China";
+        // string selectedValue = "10";
+        // int newValue;
+
+        private int currentCount = 0;
+
+        struct PumpDuty
+        {
+            public float flow;
+            public float head;
+        }
+
+        PumpDuty pumpDuty = new PumpDuty();
+
+
+        struct PumpSelections
+        {
+            public int apartments;
+            public int stories;
+            public int sinks;
+            public int dishwashers;
+            public int washingmachines;
+            public int showers;
+            public int bathtubs;
+            public int washbasins;
+            public int bidets;
+            public string toilet;
+            public string pipe;
+            public float pipewidth;
+            public float pipelength;
+
+
+            public PumpSelections(int ten, int two, int one, int zero, string toiletSystem, string pipeSystem, float pipeW, float pipeL)
+            {
+                apartments = ten;
+                stories = two;
+                sinks = two;
+                dishwashers = one;
+                washingmachines = one;
+                showers = one;
+                bathtubs = one;
+                washbasins = two;
+                bidets = zero;
+                toilet = toiletSystem;
+                pipe = pipeSystem;
+                pipelength = pipeL;
+                pipewidth = pipeW;
+
+            }
+        }
+
+        struct PumpsChosenDisplayed
+        {
+            public string model;
+            public string v380;
+            public string v220;
+            public string kw;
+        }
+
+        PumpsChosenDisplayed[] pumpsChosenDisplayed = new PumpsChosenDisplayed[30];
+
+
+        struct PumpsChosen
+        {
+            public string model;
+            public string v380;
+            public string v220;
+            public string kw;
+        }
+
+
+
+        PumpsChosen pumpsChosen = new PumpsChosen();
+
+        float[,] boosterPerformance = new float[,]
+             { { 0.6F, 0.8F,   1.0F,  1.2F,  1.4F, 1.6F, 1.8F,},
 { 12.5F, 12.0F, 11.5F, 11.0F, 10.5F,10.0F, 9.5F,},
 { 18.0F, 17.5F, 17.0F, 16.5F, 16.0F,15.0F, 14.0F,}};
 
-    /*float[,] boosterPerformance = new float[,]
-{ { 0.6F, 12.5F}, { 0.8F, 12F }, { 1.0F, 11.5F }, { 1.2F, 11.0F },
-        { 0.6F, 18.0F}, { 0.8F, 17.5F }, { 1.0F, 17.0F }, { 1.2F, 16.5F } };*/
+        /*float[,] boosterPerformance = new float[,]
+    { { 0.6F, 12.5F}, { 0.8F, 12F }, { 1.0F, 11.5F }, { 1.2F, 11.0F },
+            { 0.6F, 18.0F}, { 0.8F, 17.5F }, { 1.0F, 17.0F }, { 1.2F, 16.5F } };*/
 
-    string[,] boosterProducts = new string[,]
-        {{"VMS1-20", "VMS1-205","n/a" },
+        string[,] boosterProducts = new string[,]
+            {{"VMS1-20", "VMS1-205","n/a" },
 {"VMS1-30", "VMS1-305" ,"n/a"}};
 
-    public class Model
-    {
-        public string id { get; set; }
-        public ModelGroup[] model_groups { get; set; }
-    }
+        public class Model
+        {
+            public string id { get; set; }
+            public ModelGroup[] model_groups { get; set; }
+        }
 
-    public class ModelGroup
-    {
-        public string id { get; set; }
-        public string v380 { get; set; }
-        public string v220 { get; set; }
-        public float kw { get; set; }
-        public Flow[] flows { get; set; }
-    }
+        public class ModelGroup
+        {
+            public string id { get; set; }
+            public string v380 { get; set; }
+            public string v220 { get; set; }
+            public float kw { get; set; }
+            public Flow[] flows { get; set; }
+        }
 
-    public class Flow
-    {
-        public float m3h { get; set; }
-        public float head { get; set; }
-    }
+        public class Flow
+        {
+            public float m3h { get; set; }
+            public float head { get; set; }
+        }
 
 
 
-    float[,] boosterPerformanceVMS8 = new float[,]
-     { { 6, 7,  8,  9,  10, 11,},
+        float[,] boosterPerformanceVMS8 = new float[,]
+         { { 6, 7,  8,  9,  10, 11,},
 { 10, 9.3F, 9, 18.5F, 8F, 7F,},
 { 20, 19, 18, 17, 16, 14,},
 { 30, 28.5F, 27, 25, 24, 21,},
@@ -465,8 +467,8 @@
 { 187, 175, 167, 157, 146, 134,},
 { 208, 195, 186, 175, 163, 150,},};
 
-    string[,] boosterProductsVMS8 = new string[,]
-        {{"VMS8-20/1", "VMS8-20/1S","n/a" },
+        string[,] boosterProductsVMS8 = new string[,]
+            {{"VMS8-20/1", "VMS8-20/1S","n/a" },
 {"VMS8-20", "VMS8-20S" ,"n/a"},
 {"VMS8-30", "VMS8-30S" ,"n/a"},
 {"VMS8-40", "VMS8-40S" ,"n/a"},
@@ -479,136 +481,149 @@
 {"VMS8-160", "n/a" ,"n/a"},
 {"VMS8-180", "n/a" ,"n/a"},
 {"VMS8-200", "n/a" ,"n/a"}
-                        };
+                            };
 
-    PumpSelections pumpSelections = new PumpSelections(10, 2, 1, 0, "2 x Flush tank / Cistern", "Steel Pipe ( old )", 39.0F, 70.0F);
-    //pumpSelections.stories = 10;
+        PumpSelections pumpSelections = new PumpSelections(10, 2, 1, 0, "2 x Flush tank / Cistern", "Steel Pipe ( old )", 39.0F, 70.0F);
+        //pumpSelections.stories = 10;
 
 
-    public void calculateDuty()
-    {
-        // private List<Model>? models1;
-        for (int i = 0; i < pumpsChosenDisplayed.Count(); i++)
+        public void calculateDuty()
         {
-            pumpsChosenDisplayed[i].v380 = "n/a";
-        }
+            // private List<Model>? models1;
+            for (int i = 0; i < pumpsChosenDisplayed.Count(); i++)
+            {
+                pumpsChosenDisplayed[i].v380 = "n/a";
+            }
 
-        // Console.WriteLine(models[0].model_groups[0].flows.Count());
-        // Console.WriteLine(models[0].model_groups.Count());
+            // Console.WriteLine(models[0].model_groups[0].flows.Count());
+            // Console.WriteLine(models[0].model_groups.Count());
 
 
-        // Console.WriteLine(models[0].model_groups[0].id);
+            // Console.WriteLine(models[0].model_groups[0].id);
 
-        // float[,] boosterPerformanceAll = new float[models[0].model_groups.Count()+1, models[0].model_groups[0].flows.Count()];
-        // string[,] boosterProductsAll = new string[models[0].model_groups.Count(), 3];
+            // float[,] boosterPerformanceAll = new float[models[0].model_groups.Count()+1, models[0].model_groups[0].flows.Count()];
+            // string[,] boosterProductsAll = new string[models[0].model_groups.Count(), 3];
 
-        calculateFlowHead();
+            calculateFlowHead();
 
-      //  if (holdRaw != "empty")
-      //  {
-            TextReader tr = new StringReader(holdRaw);
-            XDocument xDocument = XDocument.Load(tr);
-            // try
-            // {
-            List<Model> models1 =
-            (
-                from e in xDocument.Root.Elements("model")
-
-                select new Model
+            if (!pumpStuctCreated)
+            {
+                if (holdRaw != "empty")
                 {
-                    id = (string)e.Element("id"),
-                    model_groups =
-                    (
-                        from p in e.Elements("model_groups")
-                        select new ModelGroup
+                    TextReader tr = new StringReader(holdRaw);
+                    XDocument xDocument = XDocument.Load(tr);
+                    // try
+                    // {
+                    // List<Model> models1 =
+                    models1 =
+                     (
+                        from e in xDocument.Root.Elements("model")
+
+                        select new Model
                         {
-                            id = (string)p.Element("id"),
-                            v380 = (string)p.Element("v380"),
-                            v220 = (string)p.Element("v220"),
-                            kw = (float)p.Element("kw"),
-                            flows =
+                            id = (string)e.Element("id"),
+                            model_groups =
                             (
-                                from r in p.Elements("flow")
-                                select new Flow
+                                from p in e.Elements("model_groups")
+                                select new ModelGroup
                                 {
-                                    m3h = (float)r.Element("m3h"),
-                                    head = (float)r.Element("head")
+                                    id = (string)p.Element("id"),
+                                    v380 = (string)p.Element("v380"),
+                                    v220 = (string)p.Element("v220"),
+                                    kw = (float)p.Element("kw"),
+                                    flows =
+                                    (
+                                        from r in p.Elements("flow")
+                                        select new Flow
+                                        {
+                                            m3h = (float)r.Element("m3h"),
+                                            head = (float)r.Element("head")
+                                        }
+                                    ).ToArray()
                                 }
                             ).ToArray()
-                        }
-                    ).ToArray()
 
-                    /*  author = (string)p.Element("author"),
-                        title = (string)p.Element("title"),
-                        genre = (string)p.Element("genre"),
-                        price = (float)p.Element("price"),*/
+                            /*  author = (string)p.Element("author"),
+                                title = (string)p.Element("title"),
+                                genre = (string)p.Element("genre"),
+                                price = (float)p.Element("price"),*/
 
-                }).ToList();
-            Console.WriteLine(models1[2].model_groups[0].flows[0].head);
-            //   }
-            //   catch (Exception)
-            //   { Console.WriteLine("exception line 550"); }
-            Console.WriteLine(models1[1].model_groups[0].flows[0].head);
-      //  }
-
-        int pint = 0;
-        int rint = 0;
-        int eint = 0;
-
-
-        if (models1 != null)
-        {
-            Console.WriteLine(models1[2].model_groups[0].flows[0].head);
-            // Console.WriteLine(models1[0].model_groups.Count());
-            if (models1.Count() != 0)
-            {
-                Console.WriteLine("going into booster");
-                foreach (Model e in models1)
-                {
-                    Console.WriteLine(e.id);
-                    float[,] boosterPerformanceAll = new float[models1[eint].model_groups.Count() + 1, models1[eint].model_groups[pint].flows.Count()];
-                    string[,] boosterProductsAll = new string[models1[eint].model_groups.Count(), 3];
-                    foreach (ModelGroup p in e.model_groups)
-                    {
-                        foreach (Flow r in p.flows)
-                        {
-                            Console.WriteLine(r.head);
-                            if (pint == 0)
-                            {
-                                boosterPerformanceAll[0, rint] = r.m3h;
-                            }
-                            boosterPerformanceAll[pint + 1, rint] = r.head;
-
-                            if (rint < models1[eint].model_groups[pint].flows.Count() - 1) { rint++; }
-                        }
-                        // Console.WriteLine(p.kw);
-                        boosterProductsAll[pint, 0] = p.v380;
-                        boosterProductsAll[pint, 1] = p.v220;
-                        boosterProductsAll[pint, 2] = p.kw.ToString();
-                        pint++;
-                        rint = 0;
-                    }
-
-                    pumpsChosenDisplayed[pint - 1].v380 = "n/a";
-                    pumpsChosen = choisePumps(boosterPerformanceAll, boosterProductsAll, e.id);
-
-                    pumpsChosenDisplayed[pint - 1].model = pumpsChosen.model;
-                    pumpsChosenDisplayed[pint - 1].v380 = pumpsChosen.v380;
-                    pumpsChosenDisplayed[pint - 1].v220 = pumpsChosen.v220;
-                    pumpsChosenDisplayed[pint - 1].kw = pumpsChosen.kw;
-                    eint++;
-                    pint = 0;
-
+                        }).ToList();
+                  //  Console.WriteLine(models1[2].model_groups[0].flows[0].head);
+                    //   }
+                    //   catch (Exception)
+                    //   { Console.WriteLine("exception line 550"); }
+                   // Console.WriteLine(models1[1].model_groups[0].flows[0].head);
+                    pumpStuctCreated = true;
+#if DEBUG
+                Console.WriteLine("pump structure created");
+#endif
                 }
-                Console.WriteLine(pumpsChosenDisplayed[0].v380);
             }
-        }
 
-        Console.WriteLine("line 600");
+            int pint = 0;
+            int rint = 0;
+            int eint = 0;
+
+
+            if (models1 != null)
+            {
+               // Console.WriteLine(models1[2].model_groups[0].flows[0].head);
+                // Console.WriteLine(models1[0].model_groups.Count());
+                if (models1.Count() != 0)
+                {
+#if DEBUG
+                Console.WriteLine("going into booster");
+#endif
+                    foreach (Model e in models1)
+                    {
+                       // Console.WriteLine(e.id);
+                        float[,] boosterPerformanceAll = new float[models1[eint].model_groups.Count() + 1, models1[eint].model_groups[pint].flows.Count()];
+                        string[,] boosterProductsAll = new string[models1[eint].model_groups.Count(), 3];
+                        foreach (ModelGroup p in e.model_groups)
+                        {
+                            foreach (Flow r in p.flows)
+                            {
+                               // Console.WriteLine(r.head);
+                                if (pint == 0)
+                                {
+                                    boosterPerformanceAll[0, rint] = r.m3h;
+                                }
+                                boosterPerformanceAll[pint + 1, rint] = r.head;
+
+                                if (rint < models1[eint].model_groups[pint].flows.Count() - 1) { rint++; }
+                            }
+                            // Console.WriteLine(p.kw);
+                            boosterProductsAll[pint, 0] = p.v380;
+                            boosterProductsAll[pint, 1] = p.v220;
+                            boosterProductsAll[pint, 2] = p.kw.ToString();
+                            pint++;
+                            rint = 0;
+                        }
+
+                        pumpsChosenDisplayed[pint - 1].v380 = "n/a";
+                        pumpsChosen = choisePumps(boosterPerformanceAll, boosterProductsAll, e.id);
+
+                        pumpsChosenDisplayed[pint - 1].model = pumpsChosen.model;
+                        pumpsChosenDisplayed[pint - 1].v380 = pumpsChosen.v380;
+                        pumpsChosenDisplayed[pint - 1].v220 = pumpsChosen.v220;
+                        pumpsChosenDisplayed[pint - 1].kw = pumpsChosen.kw;
+                        eint++;
+                        pint = 0;
+
+                    }
+                    //  Console.WriteLine(pumpsChosenDisplayed[0].v380);
+                }
+            }
+#if DEBUG
+            Console.WriteLine("line 600");
+#endif
 
         PumpsChosen choisePumps(float[,] perf, string[,] prod, string model)
         {
+#if DEBUG
             Console.WriteLine("going into choisePumps");
+#endif
             PumpsChosen returnStrut = new PumpsChosen();
             returnStrut.model = model;
 
@@ -651,8 +666,8 @@
                 for (int i = 1; i < perf.GetLength(0); i++)
 
                 {
-                    Console.WriteLine(perf.GetLength(0));
-                    Console.WriteLine(perf[i, flowIndex]);
+                   // Console.WriteLine(perf.GetLength(0));
+                   // Console.WriteLine(perf[i, flowIndex]);
                     if (pumpDuty.head <= perf[i, flowIndex])
                     {
                         modelIndex = i - 1;
@@ -820,7 +835,7 @@
           pumpsChosenDisplayed[3].kw = pumpsChosen.kw;*/
 
 
-        Console.WriteLine("Break Point");
+      //  Console.WriteLine("Break Point");
     }
 
     /*   void OnStartup(ChangeEventArgs e)
