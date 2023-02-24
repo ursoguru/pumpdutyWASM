@@ -237,6 +237,7 @@
                             <th scope="col">380V</th>
                             <th scope="col">220V</th>
                             <th scope="col">kW</th>
+                            <th scope="col">Link</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -252,12 +253,24 @@
                                         <td>@pumpsChosenDisplayed[i].v380</td>
                                         <td>@pumpsChosenDisplayed[i].v220</td>
                                         <td>@pumpsChosenDisplayed[i].kw</td>
-
+                                        <td><a target="_blank" class="font-weight-bold link-dark" href=@UrlForMe>link</a></td>
                                     </tr>
                                 }
                             }
                         }
+                        <tr>
+                            <td>
+                                <img src="hsi1.jpg" width="50" height="50">
+                            </td>
+                            <td>
+                                <a target="_blank" class="font-weight-bold link-dark" href=@UrlForMe>link</a>
 
+                               
+                            </td>
+                            <td>
+                                <a href="https://shackdemos.co.za/monitorportal/" target="_blank">link</a>
+                            </td>
+                        </tr>
                        
                     </tbody>
                 </table>
@@ -294,6 +307,10 @@
     List<Model>? models1 = new List<Model>();
     String holdRaw = "empty";
     Boolean pumpStuctCreated = false;
+
+    string boosterBaseURL = "https://shackdemos.co.za/monitorportal/product-category/booster-products/";
+
+    string UrlForMe = "https://shackdemos.co.za/monitorportal/product-category/booster-products/vms8/vms8-20-range/";
 
     protected override async Task OnInitializedAsync()
     {
@@ -401,7 +418,7 @@
         public string kw;
     }
 
-    PumpsChosenDisplayed[] pumpsChosenDisplayed = new PumpsChosenDisplayed[11];
+    PumpsChosenDisplayed[] pumpsChosenDisplayed = new PumpsChosenDisplayed[20];
 
 
     struct PumpsChosen
