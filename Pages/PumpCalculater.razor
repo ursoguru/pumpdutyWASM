@@ -237,7 +237,7 @@
                             <th scope="col">380V</th>
                             <th scope="col">220V</th>
                             <th scope="col">kW</th>
-                            <th scope="col">Link</th>
+                            <th scope="col">Pump</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -249,29 +249,46 @@
                                 if (pumpsChosenDisplayed[i].v380 != "n/a")
                                 {
                                     <tr>
-                                        <td>@pumpsChosenDisplayed[i].model</td>
+                                        <!--<td>@pumpsChosenDisplayed[i].model</td>-->
+                                        <td><a target="_blank" class="font-weight-bold link-dark" href=@UrlForMe>@pumpsChosenDisplayed[i].model</a></td>
                                         <td>@pumpsChosenDisplayed[i].v380</td>
                                         <td>@pumpsChosenDisplayed[i].v220</td>
                                         <td>@pumpsChosenDisplayed[i].kw</td>
-                                        <td><a target="_blank" class="font-weight-bold link-dark" href=@UrlForMe>link</a></td>
+                                        @{
+                                            if (pumpsChosenDisplayed[i].vmsPump)
+                                            //  if (pumpsChosenDisplayed[i].model == "VMS8")
+                                            {
+                                                <td><img src="vms1.jpg" width="25" height="50"></td>
+                                            }
+                                            else
+                                            {
+                                                <td><img src="hsi1.jpg" width="50" height="50"></td>
+                                            }
+                                        }
+
                                     </tr>
                                 }
                             }
                         }
-                        <tr>
-                            <td>
-                                <img src="hsi1.jpg" width="50" height="50">
-                            </td>
-                            <td>
-                                <a target="_blank" class="font-weight-bold link-dark" href=@UrlForMe>link</a>
+                        <!--  <tr>
+           <td>
+               <img src="hsi1.jpg" width="50" height="50">
+           </td>
+           <td>
+               <img src="vms1.jpg" width="25" height="50">
+           </td>
+           <td>
+               <a target="_blank" class="font-weight-bold link-dark" href=@UrlForMe>link</a>
 
-                               
-                            </td>
-                            <td>
-                                <a href="https://shackdemos.co.za/monitorportal/" target="_blank">link</a>
-                            </td>
-                        </tr>
-                       
+
+           </td>
+           <td>
+               <a href="https://shackdemos.co.za/monitorportal/" target="_blank">link</a>
+           </td>
+       </tr>
+
+        -->
+
                     </tbody>
                 </table>
 
@@ -416,6 +433,7 @@
         public string v380;
         public string v220;
         public string kw;
+        public bool vmsPump;
     }
 
     PumpsChosenDisplayed[] pumpsChosenDisplayed = new PumpsChosenDisplayed[20];
@@ -637,6 +655,8 @@
                     pumpsChosen = choisePumps(boosterPerformanceAll, boosterProductsAll, e.id);
 
                     pumpsChosenDisplayed[eint].model = pumpsChosen.model;
+                    pumpsChosenDisplayed[eint].vmsPump = pumpsChosen.model.Contains("VMS");
+
                     pumpsChosenDisplayed[eint].v380 = pumpsChosen.v380;
 #if DEBUG
                     Console.WriteLine("pumps chosen" + pumpsChosenDisplayed[eint].v380);
@@ -685,7 +705,21 @@
             int flowIndex = 500;
             int modelIndex = 500;
 
+            if (pumpDuty.flow < perf[0, 0])
+            {
+#if DEBUG
+                Console.WriteLine("flow is less than"+ perf[0, 0]);
+#endif
+                return returnStrut;
+            }
 
+            if (pumpDuty.head < perf[0, perf.GetLength(1)-1])
+            {
+#if DEBUG
+                Console.WriteLine("duty is less than" + perf[1, perf.GetLength(1)-1]);
+#endif
+                return returnStrut;
+            }
 
             for (int j = 0; j < perf.GetLength(1); j++)
             {
@@ -970,5 +1004,5 @@
        //      currentCount++;
        //  }
     */
-}
+    }
 
