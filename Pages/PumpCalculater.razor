@@ -250,7 +250,7 @@
                                 {
                                     <tr>
                                         <!--<td>@pumpsChosenDisplayed[i].model</td>-->
-                                        <td><a target="_blank" class="font-weight-bold link-dark" href=@UrlForMe>@pumpsChosenDisplayed[i].model</a></td>
+                                        <td><a target="_blank" class="font-weight-bold link-dark" href=@pumpsChosenDisplayed[i].wordpressURL>@pumpsChosenDisplayed[i].model</a></td>
                                         <td>@pumpsChosenDisplayed[i].v380</td>
                                         <td>@pumpsChosenDisplayed[i].v220</td>
                                         <td>@pumpsChosenDisplayed[i].kw</td>
@@ -434,6 +434,7 @@
         public string v220;
         public string kw;
         public bool vmsPump;
+        public string wordpressURL;
     }
 
     PumpsChosenDisplayed[] pumpsChosenDisplayed = new PumpsChosenDisplayed[20];
@@ -656,6 +657,14 @@
 
                     pumpsChosenDisplayed[eint].model = pumpsChosen.model;
                     pumpsChosenDisplayed[eint].vmsPump = pumpsChosen.model.Contains("VMS");
+
+
+
+                 //   string boosterBaseURL = "https://shackdemos.co.za/monitorportal/product-category/booster-products/";
+
+                 //   string UrlForMe = "https://shackdemos.co.za/monitorportal/product-category/booster-products/vms8/vms8-20-range/";
+
+                    pumpsChosenDisplayed[eint].wordpressURL = boosterBaseURL + pumpsChosen.model +"/" + pumpsChosen.v380 + "-range/";
 
                     pumpsChosenDisplayed[eint].v380 = pumpsChosen.v380;
 #if DEBUG
