@@ -26,13 +26,13 @@
 
                                 <tbody>
                                     <!--
-                                    <tr>
-                                        <td>fred1234567890</td>
-                                        <td>fred1234567890</td>
-                                        <td>fred1234567890</td>
-                                        <td>fred</td>
+    <tr>
+        <td>fred1234567890</td>
+        <td>fred1234567890</td>
+        <td>fred1234567890</td>
+        <td>fred</td>
 
-                                    </tr>-->
+    </tr>-->
                                     <tr>
                                         <!--scope="row" colspan="3"-->
                                         <th>Number of apartments</th>
@@ -184,6 +184,26 @@
                                             <p style="color:red"><small>@pipelengtherror</small></p>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <th>Flow Velocity (m/s)</th>
+                                        <td>
+                                            @pumpDuty.velocity
+                                            @if (pumpDuty.velocity > 2.8F) {
+                                            <p style="color:red"><small>Do not exceed 2.8m/s</small></p>
+                                                }
+                                        </td>
+                                        <!--
+
+    <td>
+        <div class="input-group mb-3" style="width:200px">
+
+            <input type="number" step=1 class="form-control" value="@pumpSelections.pipelength" @onchange="@OnEditPipeLength">
+
+        </div>
+        <p style="color:red"><small>@pipelengtherror</small></p>
+    </td>-->
+                                    </tr>
+                                    
                                 </tbody>
                             </table>
                         </td>
@@ -318,16 +338,16 @@
 
 @code {
 
-    XDocument xDocument = new XDocument();
-    // StreamReader streamReader = new StreamReader(@"bosterpumps.xml");
-    List<Model>? models = new List<Model>();
-    List<Model>? models1 = new List<Model>();
-    String holdRaw = "empty";
-    Boolean pumpStuctCreated = false;
+        XDocument xDocument = new XDocument();
+        // StreamReader streamReader = new StreamReader(@"bosterpumps.xml");
+        List<Model>? models = new List<Model>();
+        List<Model>? models1 = new List<Model>();
+        String holdRaw = "empty";
+        Boolean pumpStuctCreated = false;
 
-    string boosterBaseURL = "https://shackdemos.co.za/monitorp/product-category/booster-products/";
+        string boosterBaseURL = "https://shackdemos.co.za/monitorp/product-category/booster-products/";
 
-    string UrlForMe = "https://shackdemos.co.za/monitorportal/product-category/booster-products/vms8/vms8-20-range/";
+        string UrlForMe = "https://shackdemos.co.za/monitorportal/product-category/booster-products/vms8/vms8-20-range/";
 
     protected override async Task OnInitializedAsync()
     {
@@ -386,6 +406,7 @@
     {
         public float flow;
         public float head;
+        public float velocity;
     }
 
     PumpDuty pumpDuty = new PumpDuty();
@@ -660,9 +681,9 @@
 
 
 
-                 //   string boosterBaseURL = "https://shackdemos.co.za/monitorportal/product-category/booster-products/";
+                    //   string boosterBaseURL = "https://shackdemos.co.za/monitorportal/product-category/booster-products/";
 
-                 //   string UrlForMe = "https://shackdemos.co.za/monitorportal/product-category/booster-products/vms8/vms8-20-range/";
+                    //   string UrlForMe = "https://shackdemos.co.za/monitorportal/product-category/booster-products/vms8/vms8-20-range/";
 
                     pumpsChosenDisplayed[eint].wordpressURL = boosterBaseURL + pumpsChosen.model +"/" + pumpsChosen.v380 + "-range/";
 
@@ -786,6 +807,10 @@
             float FB9;
             float RDC18 = 0.0F;
 
+            //added for velocity calc
+            float B34;
+            float FB7;
+
 
             switch (pumpSelections.toilet)
             {
@@ -844,6 +869,7 @@
             }
             B30 = ((float)(pumpSelections.sinks * 9 + pumpSelections.dishwashers * 10 + pumpSelections.washingmachines * 12 + pumpSelections.showers * 12 + pumpSelections.bathtubs * 15 + pumpSelections.washbasins * 6 + pumpSelections.bidets * 6) + RDB14) * (float)pumpSelections.apartments;
             B31 = B23 * B30;
+
             pumpDuty.flow = (B31 * 60.0F) / 1000.0F;
 
             switch (pumpSelections.stories)
@@ -905,6 +931,15 @@
             // RDC18 = 110.0F;
             FB9 = pumpSelections.pipelength * (float)Math.Pow(((pumpDuty.flow / 3.6F) / (3.5888F * (float)Math.Pow(10, -6) * RDC18 * ((float)Math.Pow(pumpSelections.pipewidth, 2.63)))), 1.85);
             pumpDuty.head = FB10 + FB9;
+
+            B34 = B31 * 60.0F / 1000.0F;
+            FB7 = B34 / 3.6F;
+
+#if DEBUG
+            Console.WriteLine(B31+" "+FB7);
+#endif
+
+            pumpDuty.velocity = FB7*1000.0F/(3.142F/4.0F*(float)Math.Pow(pumpSelections.pipewidth,2));
         }
 
         // pumpDuty.flow = 1.85F;
