@@ -7,7 +7,7 @@
 @using System.Net.Http.Json;
 @using System.Threading;
 
-<PageTitle>Irrigation Calculator</PageTitle>
+<PageTitle>submersible Calculator</PageTitle>
 <!--<h1>Counter PumpCalculater</h1>-->
 
 <div class="container text-left">
@@ -27,26 +27,60 @@
                                 <tbody>
 
                                     <tr>
-                                        <th>Type of Nozzles</th>
+                                        <th>Type of applications</th>
                                         <td>
-                                            <select class="form-control" value="@pumpSelections.nozzle" @onchange="@OnSelectnozzle" style="width:240px">
-                                                @foreach (var nozzle in nozzles)
+                                            <select class="form-control" value="@pumpSelections.application" @onchange="@OnSelectapplication" style="width:240px">
+                                                @foreach (var application in applications)
                                                 {
-                                                    <option value=@nozzle>@nozzle</option>
+                                                    <option value=@application>@application</option>
                                                 }
                                             </select>
                                         </td>
                                     </tr>
-
                                     <tr>
-                                        <th>Number of nozzels per zone</th>
+                                        <th>Pipe ID (mm)</th>
                                         <td>
-                                            <div class="input-group mb-3" style="width:240px">
-                                                <!--value="@pumpSelections.noNozzels"-->
-                                                <input type="number" step=1 class="form-control" value="@pumpSelections.noNozzels" @onchange="@OnEditnoNozzels">
+                                            <div class="input-group mb-3" style="width:200px">
+                                                <!--value="@pumpSelections.pipewidth"-->
+                                                <input type="number" step=1 class="form-control" value="@pumpSelections.pipewidth" @onchange="@OnEditPipeWidth">
 
                                             </div>
-                                            <p style="color:red"><small>@noNozzelserror</small></p>
+                                            <p style="color:red"><small>@pipewidtherror</small></p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Pipe length (m)</th>
+                                        <td>
+                                            <div class="input-group mb-3" style="width:200px">
+                                                <!--value="@pumpSelections.pipelength"-->
+                                                <input type="number" step=1 class="form-control" value="@pumpSelections.pipelength" @onchange="@OnEditPipeLength">
+
+                                            </div>
+                                            <p style="color:red"><small>@pipelengtherror</small></p>
+                                        </td>
+                                    </tr>
+
+
+                                    <tr>
+                                        <th>Static lift from water level (m)</th>
+                                        <td>
+                                            <div class="input-group mb-3" style="width:240px">
+                                                <!--value="@pumpSelections.lift"-->
+                                                <input type="number" step=1 class="form-control" value="@pumpSelections.lift" @onchange="@OnEditlift">
+
+                                            </div>
+                                            <p style="color:red"><small>@lifterror</small></p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total required flow (m³/h)</th>
+                                        <td>
+                                            <div class="input-group mb-3" style="width:240px">
+                                                <!--value="@pumpSelections.lift"-->
+                                                <input type="number" step=1 class="form-control" value="@pumpSelections.flow" @onchange="@OnEditflow">
+
+                                            </div>
+                                            <p style="color:red"><small>@flowerror</small></p>
                                         </td>
                                     </tr>
 
@@ -66,7 +100,7 @@
 
             </div>
             <div>
-                <!-- <table class="table">
+                <table class="table">
                     @if (pumpDuty.velocity > 2.8F)
                     {
                         <tbody style="color:red">
@@ -105,7 +139,7 @@
                     }
 
 
-                </table>-->
+                </table>
                 <table class="table">
                     <thead>
                         <tr>
@@ -153,7 +187,7 @@
                         @{
                             for (int i = 0; i < pumpsChosenDisplayed.Count(); i++)
                             {
-                                if (pumpsChosenDisplayed[i].v380 != "n/a")
+                                if (pumpsChosenDisplayed[i].v220 != "n/a")
                                 {
                                     <tr>
                                         <!--<td>@pumpsChosenDisplayed[i].model</td>-->
@@ -201,12 +235,12 @@
 
 
 
-                <!--          <h5>nozzle: @pumpSelections.nozzle</h5>
+                <!--          <h5>application: @pumpSelections.application</h5>
                        <h5>apartment: @pumpSelections.apartments</h5>
                        <h5>stories: @pumpSelections.stories</h5>
                        <h5>flow: @pumpDuty.flow</h5>
                        <h5>head: @pumpDuty.head</h5>
-                       <h5>pipe width: @pumpSelections.noNozzels</h5>
+                       <h5>pipe width: @pumpSelections.lift</h5>
                        <h5>pipe length: @pumpSelections.pipelength</h5>
                 -->
 
@@ -277,13 +311,14 @@
     List<int> washbasins = new List<int>() { 0, 1, 2, 3, 4, 5 };
     List<int> bidets = new List<int>() { 0, 1, 2 };
 
-    public string noNozzelserror = "";
+    public string lifterror = "";
+    public string flowerror = "";
     public string pipelengtherror = "";
+    public string pipewidtherror = "";
 
 
 
-
-    List<string> nozzles = new List<string>() { "Static (pop-up/rigid rizer)", "Geardrive (pop-up/rigid rizer)", "Rotator", "Impact (pop-up/rigid rizer)", "Micro Sprinkler" };
+    List<string> applications = new List<string>() { "GeneralWaterDrainage(Continuous)", "DirtyWaterDrainage(Continuous)", "Sewage(Continuous)","WaterFeature(Continuous)", "LightDutyWaterDrainage(Intermittent)", "LightDutyDirtyWaterDrainage(Intermittent)" };
     List<string> pipes = new List<string>() { "Steel Pipe ( New )", "Steel Pipe ( old )", "UPVC Pipe", "Asbestos cement" };
 
 
@@ -310,13 +345,15 @@
         public int bathtubs;
         public int washbasins;
         public int bidets;
-        public string nozzle;
+        public string application;
         public string pipe;
-        public float noNozzels;
+        public float lift;
+        public float pipewidth;
         public float pipelength;
+        public float flow;
 
 
-        public PumpSelections(int ten, int two, int one, int zero, string nozzleSystem, string pipeSystem, float pipeW, float pipeL)
+        public PumpSelections(int ten, int two, int one, int zero, string applicationSystem, string pipeSystem, float pipeW, float pipeL)
         {
             apartments = ten;
             stories = two;
@@ -327,10 +364,12 @@
             bathtubs = one;
             washbasins = two;
             bidets = zero;
-            nozzle = nozzleSystem;
+            application = applicationSystem;
             pipe = pipeSystem;
             pipelength = pipeL;
-            noNozzels = pipeW;
+            pipewidth = pipeW;
+            lift = pipeW;
+            flow = pipeW;
 
         }
     }
@@ -412,36 +451,22 @@
 { 187, 175, 167, 157, 146, 134,},
 { 208, 195, 186, 175, 163, 150,},};
 
-    string[,] boosterProductsVMS8 = new string[,]
-        {{"VMS8-20/1", "VMS8-20/1S","n/a" },
-{"VMS8-20", "VMS8-20S" ,"n/a"},
-{"VMS8-30", "VMS8-30S" ,"n/a"},
-{"VMS8-40", "VMS8-40S" ,"n/a"},
-{"VMS8-50", "VMS8-50S" ,"n/a"},
-{"VMS8-60", "VMS8-60S" ,"n/a"},
-{"VMS8-80", "n/a" ,"n/a"},
-{"VMS8-100", "n/a" ,"n/a"},
-{"VMS8-120", "n/a" ,"n/a"},
-{"VMS8-140", "n/a" ,"n/a"},
-{"VMS8-160", "n/a" ,"n/a"},
-{"VMS8-180", "n/a" ,"n/a"},
-{"VMS8-200", "n/a" ,"n/a"}
-                                    };
 
-    PumpSelections pumpSelections = new PumpSelections(10, 2, 1, 0, "Rotator", "Steel Pipe ( old )", 39.0F, 70.0F);
+
+    PumpSelections pumpSelections = new PumpSelections(10, 2, 1, 0, "Sewage(Continuous)", "Steel Pipe ( old )", 39.0F, 70.0F);
     //pumpSelections.stories = 10;
 
 
     public void calculateDuty()
     {
 #if DEBUG
-    // Console.WriteLine(holdRaw);
+        // Console.WriteLine(holdRaw);
 #endif
 
         // private List<Model>? models1;
         for (int i = 0; i < pumpsChosenDisplayed.Count(); i++)
         {
-            pumpsChosenDisplayed[i].v380 = "n/a";
+            pumpsChosenDisplayed[i].v220 = "n/a";
         }
 
         // Console.WriteLine(models[0].model_groups[0].flows.Count());
@@ -501,10 +526,14 @@
                     }).ToList();
 
 #if DEBUG
-            Console.WriteLine(models1[0].model_groups.Count());
-            Console.WriteLine(models1[1].model_groups.Count());
-            Console.WriteLine(models1[2].model_groups.Count());
-          //  for (int i = 0; i < 21; i++) { Console.WriteLine(models1[0].model_groups[i].flows.Count()); }
+                //Console.WriteLine(models1[0].model_groups.Count()+" 0 "+models1[0].id);
+                //Console.WriteLine(models1[1].model_groups.Count()+" 1");
+                //Console.WriteLine(models1[2].model_groups.Count()+" 2");
+                for (int i = 0; i < 5; i++) {
+                    Console.WriteLine(models1[i].model_groups.Count() + " 0 " + models1[i].id);
+                    // Console.WriteLine("Index "+i);
+                    // Console.WriteLine(models1[0].model_groups[i].flows.Count());
+                }
 #endif
 
                 //  Console.WriteLine(models1[2].model_groups[0].flows[0].head);
@@ -514,7 +543,7 @@
                 // Console.WriteLine(models1[1].model_groups[0].flows[0].head);
                 pumpStuctCreated = true;
 #if DEBUG
-            Console.WriteLine("pump structure created");
+                Console.WriteLine("pump structure created");
 #endif
             }
         }
@@ -531,18 +560,22 @@
             if (models1.Count() != 0)
             {
 #if DEBUG
-            Console.WriteLine("going into booster");
+                Console.WriteLine("going into booster");
 #endif
+
+
                 foreach (Model e in models1)
                 {
-                    Console.WriteLine(e.id);
-                    float[,] boosterPerformanceAll = new float[models1[eint].model_groups.Count() + 1, models1[eint].model_groups[pint].flows.Count()];
+                    // Console.WriteLine(e.id);
+                    //float[,] boosterPerformanceAll = new float[models1[eint].model_groups.Count() + 1, models1[eint].model_groups[pint].flows.Count()];
+                    float[,] boosterPerformanceAll = new float[models1[eint].model_groups.Count() + 1, 12]; //above does not work used first flow count - luvky it worked in other calculators
                     string[,] boosterProductsAll = new string[models1[eint].model_groups.Count(), 3];
                     foreach (ModelGroup p in e.model_groups)
                     {
+                        // Console.WriteLine(p.id);
                         foreach (Flow r in p.flows)
                         {
-                            Console.WriteLine(r.head);
+                            // Console.WriteLine(r.head);
                             if (pint == 0)
                             {
                                 boosterPerformanceAll[0, rint] = r.m3h;
@@ -560,7 +593,7 @@
                     }
 
                     // pumpsChosenDisplayed[pint - 1].v380 = "n/a";
-                    pumpsChosenDisplayed[eint].v380 = "n/a";
+                    pumpsChosenDisplayed[eint].v220 = "n/a";
                     pumpsChosen = choisePumps(boosterPerformanceAll, boosterProductsAll, e.id);
 
                     pumpsChosenDisplayed[eint].model = pumpsChosen.model;
@@ -576,7 +609,7 @@
 
                     pumpsChosenDisplayed[eint].v380 = pumpsChosen.v380;
 #if DEBUG
-                Console.WriteLine("pumps chosen" + pumpsChosenDisplayed[eint].v380);
+                    Console.WriteLine("pumps chosen" + pumpsChosenDisplayed[eint].v380);
 #endif
                     pumpsChosenDisplayed[eint].v220 = pumpsChosen.v220;
                     pumpsChosenDisplayed[eint].kw = pumpsChosen.kw;
@@ -592,13 +625,13 @@
             InvokeAsync(() => { StateHasChanged(); });
         }
 #if DEBUG
-    Console.WriteLine("line 600");
+        Console.WriteLine("line 600");
 #endif
 
         PumpsChosen choisePumps(float[,] perf, string[,] prod, string model)
         {
 #if DEBUG
-        Console.WriteLine("going into choisePumps");
+            Console.WriteLine("going into choisePumps");
 
 
 #endif
@@ -625,7 +658,7 @@
             if (pumpDuty.flow < perf[0, 0])
             {
 #if DEBUG
-            Console.WriteLine("flow is less than" + perf[0, 0]);
+                Console.WriteLine("flow is less than" + perf[0, 0]);
 #endif
                 return returnStrut;
             }
@@ -633,7 +666,7 @@
             if (pumpDuty.head < perf[0, perf.GetLength(1) - 1])
             {
 #if DEBUG
-            Console.WriteLine("duty is less than" + perf[1, perf.GetLength(1) - 1]);
+                Console.WriteLine("duty is less than" + perf[1, perf.GetLength(1) - 1]);
 #endif
                 return returnStrut;
             }
@@ -701,8 +734,13 @@
             float C5 = 0.0F;
             float D5 = 0.0F;
 
+            //sub
+            float B17;
+            float B19;
+            float B20;
 
-            switch (pumpSelections.nozzle)
+
+            switch (pumpSelections.application)
             {
                 case "Static (pop-up/rigid rizer)":
                     C5 = 0.7F;
@@ -733,7 +771,7 @@
             B15 = (float)(pumpSelections.sinks + pumpSelections.dishwashers + pumpSelections.washingmachines + pumpSelections.showers + pumpSelections.bathtubs + pumpSelections.washbasins + pumpSelections.bidets) + RDC13;
 
 
-            /*   switch (pumpSelections.nozzle)
+            /*   switch (pumpSelections.application)
                {
                    case "1 x Flush tank / Cistern":
                        pumpDuty.head = (float)pumpSelections.stories * 10.0F;
@@ -742,7 +780,7 @@
                        pumpDuty.head = (float)pumpSelections.stories * 2.0F;
                        break;
                } */
-            switch (pumpSelections.nozzle) //irr
+            switch (pumpSelections.application) //irr
             {
                 case "1 x Flush tank / Cistern":
 
@@ -764,7 +802,7 @@
             B30 = ((float)(pumpSelections.sinks * 9 + pumpSelections.dishwashers * 10 + pumpSelections.washingmachines * 12 + pumpSelections.showers * 12 + pumpSelections.bathtubs * 15 + pumpSelections.washbasins * 6 + pumpSelections.bidets * 6) + RDB14) * (float)pumpSelections.apartments;
             B31 = B23 * B30;
 
-            pumpDuty.flow = C5 * pumpSelections.noNozzels; //irr
+            pumpDuty.flow = pumpSelections.flow; //sub
 
             switch (pumpSelections.stories)
             {
@@ -823,17 +861,28 @@
                     break;
             }
             // RDC18 = 110.0F;
-            FB9 = pumpSelections.pipelength * (float)Math.Pow(((pumpDuty.flow / 3.6F) / (3.5888F * (float)Math.Pow(10, -6) * RDC18 * ((float)Math.Pow(pumpSelections.noNozzels, 2.63)))), 1.85);
-            pumpDuty.head = D5; //irr
+            FB9 = pumpSelections.pipelength * (float)Math.Pow(((pumpDuty.flow / 3.6F) / (3.5888F * (float)Math.Pow(10, -6) * RDC18 * ((float)Math.Pow(pumpSelections.lift, 2.63)))), 1.85);
+
+
+
+            //sub
+            B17 = pumpSelections.flow / 3.6F;
+            B19 = pumpSelections.pipelength * (float)Math.Pow((B17 / (3.5888F * (float)Math.Pow(10, -6) * 140.0F * ((float)Math.Pow(pumpSelections.pipewidth, 2.63)))), 1.85);
+            B20 = pumpSelections.lift;
+            pumpDuty.head = B19+B20; //sub
+
+            Console.WriteLine("B17 "+B17);
+            Console.WriteLine("B19 " + B19);
+            Console.WriteLine("B20 " + B20);
 
             B34 = B31 * 60.0F / 1000.0F;
             FB7 = B34 / 3.6F;
 
 #if DEBUG
-        Console.WriteLine(B31 + " " + FB7);
+            Console.WriteLine(B31 + " " + FB7);
 #endif
 
-            pumpDuty.velocity = FB7 * 1000.0F / (3.142F / 4.0F * (float)Math.Pow(pumpSelections.noNozzels, 2));
+            pumpDuty.velocity = B17 * 1000.0F / (3.142F / 4.0F * (float)Math.Pow(pumpSelections.pipewidth, 2)); //sub
         }
 
         // pumpDuty.flow = 1.85F;
@@ -906,9 +955,9 @@
         calculateDuty();
     }
 
-    void OnSelectnozzle(ChangeEventArgs e)
+    void OnSelectapplication(ChangeEventArgs e)
     {
-        pumpSelections.nozzle = e.Value.ToString();
+        pumpSelections.application = e.Value.ToString();
         calculateDuty();
     }
     void OnSelectPipe(ChangeEventArgs e)
@@ -916,10 +965,16 @@
         pumpSelections.pipe = e.Value.ToString();
         calculateDuty();
     }
-    void OnEditnoNozzels(ChangeEventArgs e)
+    void OnEditlift(ChangeEventArgs e)
     {
-        try { pumpSelections.noNozzels = float.Parse(e.Value.ToString()); noNozzelserror = ""; }
-        catch { noNozzelserror = "ERROR: This value used to be " + pumpSelections.noNozzels.ToString() + ".Please fix"; }
+        try { pumpSelections.lift = float.Parse(e.Value.ToString()); lifterror = ""; }
+        catch { lifterror = "ERROR: This value used to be " + pumpSelections.lift.ToString() + ".Please fix"; }
+        calculateDuty();
+    }
+    void OnEditflow(ChangeEventArgs e)
+    {
+        try { pumpSelections.flow = float.Parse(e.Value.ToString()); flowerror = ""; }
+        catch { flowerror = "ERROR: This value used to be " + pumpSelections.lift.ToString() + ".Please fix"; }
         calculateDuty();
     }
     void OnEditPipeLength(ChangeEventArgs e)
@@ -928,6 +983,13 @@
         catch { pipelengtherror = "ERROR: This value used to be " + pumpSelections.pipelength.ToString() + ". Please fix"; }
         calculateDuty();
     }
+    void OnEditPipeWidth(ChangeEventArgs e)
+    {
+        try { pumpSelections.pipewidth = float.Parse(e.Value.ToString()); pipewidtherror = ""; }
+        catch { pipewidtherror = "ERROR: This value used to be " + pumpSelections.pipewidth.ToString() + ".Please fix"; }
+        calculateDuty();
+    }
+
 
 
 
