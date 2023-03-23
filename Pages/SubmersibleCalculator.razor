@@ -7,7 +7,7 @@
 @using System.Net.Http.Json;
 @using System.Threading;
 
-<PageTitle>submersible Calculator</PageTitle>
+<PageTitle>Submersible Calculator</PageTitle>
 <!--<h1>Counter PumpCalculater</h1>-->
 
 <div class="container text-left">
@@ -16,7 +16,7 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th scope="col">Irrigation Pump Duty:</th>
+                        <th scope="col">Submersible Pump Duty:</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -189,25 +189,28 @@
                             {
                                 if (pumpsChosenDisplayed[i].v220 != "n/a")
                                 {
-                                    <tr>
-                                        <!--<td>@pumpsChosenDisplayed[i].model</td>-->
-                                        <td><a target="_blank" class="font-weight-bold link-dark" href=@pumpsChosenDisplayed[i].wordpressURL>@pumpsChosenDisplayed[i].model</a></td>
-                                        <td>@pumpsChosenDisplayed[i].v380</td>
-                                        <td>@pumpsChosenDisplayed[i].v220</td>
-                                        <td>@pumpsChosenDisplayed[i].kw</td>
-                                        @{
-                                            if (pumpsChosenDisplayed[i].vmsPump)
-                                            //  if (pumpsChosenDisplayed[i].model == "VMS8")
-                                            {
-                                                <td><img src="vms1.jpg" width="25" height="50"></td>
-                                            }
-                                            else
-                                            {
-                                                <td><img src="hsi1.jpg" width="50" height="50"></td>
-                                            }
-                                        }
+                                                <tr>
+                                                    <!--<td>@pumpsChosenDisplayed[i].model</td>-->
+                                                    <td><a target="_blank" class="font-weight-bold link-dark" href=@pumpsChosenDisplayed[i].wordpressURL>@pumpsChosenDisplayed[i].model</a></td>
+                                                    <td>@pumpsChosenDisplayed[i].v380</td>
+                                                    <td>@pumpsChosenDisplayed[i].v220</td>
+                                                    <td>@pumpsChosenDisplayed[i].kw</td>
+                                                    <td><img src=@pumpsChosenDisplayed[i].vmsPump width="25" height="50"></td>
 
-                                    </tr>
+                                                    @{
+
+                                                        /* if (pumpsChosenDisplayed[i].vmsPump)
+
+                                                         {
+                                                             <td><img src="vms1.jpg" width="25" height="50"></td>
+                                                         }
+                                                         else
+                                                         {
+                                                             <td><img src="hsi1.jpg" width="50" height="50"></td>
+                                                         }*/
+                                                    }
+
+                                                </tr>
                                 }
                             }
                         }
@@ -266,7 +269,7 @@
     String holdRaw = "empty";
     Boolean pumpStuctCreated = false;
 
-    string boosterBaseURL = "https://shackdemos.co.za/monitorp/product-category/booster-products/";
+    string boosterBaseURL = "https://shackdemos.co.za/monitorp/product-category/submersible-products/";
 
     string UrlForMe = "https://shackdemos.co.za/monitorportal/product-category/booster-products/vms8/vms8-20-range/";
 
@@ -380,7 +383,7 @@
         public string v380;
         public string v220;
         public string kw;
-        public bool vmsPump;
+        public string vmsPump;
         public string wordpressURL;
     }
 
@@ -594,10 +597,52 @@
 
                     // pumpsChosenDisplayed[pint - 1].v380 = "n/a";
                     pumpsChosenDisplayed[eint].v220 = "n/a";
+                    // pumpsChosenDisplayed[eint].v220 = pumpsChosen.v220;
                     pumpsChosen = choisePumps(boosterPerformanceAll, boosterProductsAll, e.id);
 
                     pumpsChosenDisplayed[eint].model = pumpsChosen.model;
-                    pumpsChosenDisplayed[eint].vmsPump = pumpsChosen.model.Contains("VMS");
+                    switch (pumpsChosen.model)
+                    {
+                        case "SS":
+                            pumpsChosenDisplayed[eint].vmsPump = "SS.jpg";
+                            if (pumpSelections.application == "GeneralWaterDrainage(Continuous)" || pumpSelections.application == "WaterFeature(Continuous)") {
+                                pumpsChosenDisplayed[eint].v220 = pumpsChosen.v220;
+                            }
+                            break;
+                        case "SQ":
+                            pumpsChosenDisplayed[eint].vmsPump = "SQ.jpg";
+                            if (pumpSelections.application == "LightDutyWaterDrainage(Intermittent)")
+                            {
+                                pumpsChosenDisplayed[eint].v220 = pumpsChosen.v220;
+                            }
+                            break;
+                        case "SQB":
+                            if (pumpSelections.application == "LightDutyDirtyWaterDrainage(Intermittent)")
+                            {
+                                pumpsChosenDisplayed[eint].v220 = pumpsChosen.v220;
+                            }
+                            pumpsChosenDisplayed[eint].vmsPump = "SQB.jpg";
+                            break;
+                        case "SSWC":
+                            if (pumpSelections.application == "DirtyWaterDrainage(Continuous)")
+                            {
+                                pumpsChosenDisplayed[eint].v220 = pumpsChosen.v220;
+                            }
+                            pumpsChosenDisplayed[eint].vmsPump = "SSWV.jpg";
+                            break;
+                        case "SSWV":
+                            if (pumpSelections.application == "Sewage(Continuous)")
+                            {
+                                pumpsChosenDisplayed[eint].v220 = pumpsChosen.v220;
+                            }
+                            pumpsChosenDisplayed[eint].vmsPump = "SSWV.jpg";
+                            break;
+
+                        default:
+                            //pumpsChosenDisplayed[eint].vmsPump = "SSWV.jpg";
+                            break;
+                    }
+
 
 
 
@@ -605,13 +650,13 @@
 
                     //   string UrlForMe = "https://shackdemos.co.za/monitorportal/product-category/booster-products/vms8/vms8-20-range/";
 
-                    pumpsChosenDisplayed[eint].wordpressURL = boosterBaseURL + pumpsChosen.model + "/" + pumpsChosen.v380 + "-range/";
+                    pumpsChosenDisplayed[eint].wordpressURL = boosterBaseURL + pumpsChosen.model + "/" + pumpsChosen.v220 + "-range/";
 
                     pumpsChosenDisplayed[eint].v380 = pumpsChosen.v380;
 #if DEBUG
-                    Console.WriteLine("pumps chosen" + pumpsChosenDisplayed[eint].v380);
+                    Console.WriteLine("pumps chosen" + pumpsChosenDisplayed[eint].v220);
 #endif
-                    pumpsChosenDisplayed[eint].v220 = pumpsChosen.v220;
+
                     pumpsChosenDisplayed[eint].kw = pumpsChosen.kw;
                     eint++;
                     pint = 0;
@@ -780,7 +825,7 @@
                        pumpDuty.head = (float)pumpSelections.stories * 2.0F;
                        break;
                } */
-            switch (pumpSelections.application) //irr
+            switch (pumpSelections.application) //sub
             {
                 case "1 x Flush tank / Cistern":
 
@@ -804,64 +849,64 @@
 
             pumpDuty.flow = pumpSelections.flow; //sub
 
-            switch (pumpSelections.stories)
-            {
-                case 1:
-                    FB10 = 25.0F;
-                    break;
-                case 2:
-                    FB10 = 31.0F;
-                    break;
-                case 3:
-                    FB10 = 37.0F;
-                    break;
-                case 4:
-                    FB10 = 43.0F;
-                    break;
-                case 5:
-                    FB10 = 49.0F;
-                    break;
-                case 6:
-                    FB10 = 55.0F;
-                    break;
-                case 7:
-                    FB10 = 61.0F;
-                    break;
-                case 8:
-                    FB10 = 67.0F;
-                    break;
-                case 9:
-                    FB10 = 73.0F;
-                    break;
-                case 10:
-                    FB10 = 79.0F;
-                    break;
-                default:
-                    //  FB10 = 25.0F;
-                    break;
-            }
+            /*   switch (pumpSelections.stories)
+               {
+                   case 1:
+                       FB10 = 25.0F;
+                       break;
+                   case 2:
+                       FB10 = 31.0F;
+                       break;
+                   case 3:
+                       FB10 = 37.0F;
+                       break;
+                   case 4:
+                       FB10 = 43.0F;
+                       break;
+                   case 5:
+                       FB10 = 49.0F;
+                       break;
+                   case 6:
+                       FB10 = 55.0F;
+                       break;
+                   case 7:
+                       FB10 = 61.0F;
+                       break;
+                   case 8:
+                       FB10 = 67.0F;
+                       break;
+                   case 9:
+                       FB10 = 73.0F;
+                       break;
+                   case 10:
+                       FB10 = 79.0F;
+                       break;
+                   default:
+                       //  FB10 = 25.0F;
+                       break;
+               } */
 
-            switch (pumpSelections.pipe)
-            {
-                case "Steel Pipe ( New )":
+            /*    switch (pumpSelections.pipe)
+                {
+                    case "Steel Pipe ( New )":
 
-                    RDC18 = 130.0F;
-                    break;
-                case "Steel Pipe ( old )":
-                    RDC18 = 110.0F;
-                    break;
-                case "UPVC Pipe":
-                    RDC18 = 140.0F;
-                    break;
-                case "Asbestos cement":
-                    RDC18 = 140.0F;
-                    break;
-                default:
-                    // RDC18 = 110.0F;
-                    break;
-            }
+                        RDC18 = 130.0F;
+                        break;
+                    case "Steel Pipe ( old )":
+                        RDC18 = 110.0F;
+                        break;
+                    case "UPVC Pipe":
+                        RDC18 = 140.0F;
+                        break;
+                    case "Asbestos cement":
+                        RDC18 = 140.0F;
+                        break;
+                    default:
+
+                        break;
+                }*/
             // RDC18 = 110.0F;
-            FB9 = pumpSelections.pipelength * (float)Math.Pow(((pumpDuty.flow / 3.6F) / (3.5888F * (float)Math.Pow(10, -6) * RDC18 * ((float)Math.Pow(pumpSelections.lift, 2.63)))), 1.85);
+            //  FB9 = pumpSelections.pipelength * (float)Math.Pow(((pumpDuty.flow / 3.6F) / (3.5888F * (float)Math.Pow(10, -6) * RDC18 * ((float)Math.Pow(pumpSelections.lift, 2.63)))), 1.85);
 
 
 
@@ -905,55 +950,55 @@
            calculateDuty();
        }*/
 
-    void OnSelectApartments(ChangeEventArgs e)
-    {
+    /*  void OnSelectApartments(ChangeEventArgs e)
+      {
 
-        pumpSelections.apartments = int.Parse(e.Value.ToString());
-        calculateDuty();
+          pumpSelections.apartments = int.Parse(e.Value.ToString());
+          calculateDuty();
 
-    }
+      }
 
-    void OnSelectStories(ChangeEventArgs e)
-    {
-        pumpSelections.stories = int.Parse(e.Value.ToString());
-        calculateDuty();
-    }
+      void OnSelectStories(ChangeEventArgs e)
+      {
+          pumpSelections.stories = int.Parse(e.Value.ToString());
+          calculateDuty();
+      }
 
-    void OnSelectSinks(ChangeEventArgs e)
-    {
-        pumpSelections.sinks = int.Parse(e.Value.ToString());
-        calculateDuty();
-    }
-    void OnSelectDishwashers(ChangeEventArgs e)
-    {
-        pumpSelections.dishwashers = int.Parse(e.Value.ToString());
-        calculateDuty();
-    }
-    void OnSelectWashingmachines(ChangeEventArgs e)
-    {
-        pumpSelections.dishwashers = int.Parse(e.Value.ToString());
-        calculateDuty();
-    }
-    void OnSelectShowers(ChangeEventArgs e)
-    {
-        pumpSelections.showers = int.Parse(e.Value.ToString());
-        calculateDuty();
-    }
-    void OnSelectBathtubs(ChangeEventArgs e)
-    {
-        pumpSelections.bathtubs = int.Parse(e.Value.ToString());
-        calculateDuty();
-    }
-    void OnSelectWashbasins(ChangeEventArgs e)
-    {
-        pumpSelections.washbasins = int.Parse(e.Value.ToString());
-        calculateDuty();
-    }
-    void OnSelectBidets(ChangeEventArgs e)
-    {
-        pumpSelections.bidets = int.Parse(e.Value.ToString());
-        calculateDuty();
-    }
+      void OnSelectSinks(ChangeEventArgs e)
+      {
+          pumpSelections.sinks = int.Parse(e.Value.ToString());
+          calculateDuty();
+      }
+      void OnSelectDishwashers(ChangeEventArgs e)
+      {
+          pumpSelections.dishwashers = int.Parse(e.Value.ToString());
+          calculateDuty();
+      }
+      void OnSelectWashingmachines(ChangeEventArgs e)
+      {
+          pumpSelections.dishwashers = int.Parse(e.Value.ToString());
+          calculateDuty();
+      }
+      void OnSelectShowers(ChangeEventArgs e)
+      {
+          pumpSelections.showers = int.Parse(e.Value.ToString());
+          calculateDuty();
+      }
+      void OnSelectBathtubs(ChangeEventArgs e)
+      {
+          pumpSelections.bathtubs = int.Parse(e.Value.ToString());
+          calculateDuty();
+      }
+      void OnSelectWashbasins(ChangeEventArgs e)
+      {
+          pumpSelections.washbasins = int.Parse(e.Value.ToString());
+          calculateDuty();
+      }
+      void OnSelectBidets(ChangeEventArgs e)
+      {
+          pumpSelections.bidets = int.Parse(e.Value.ToString());
+          calculateDuty();
+      } */
 
     void OnSelectapplication(ChangeEventArgs e)
     {
@@ -1004,7 +1049,7 @@
        //      currentCount++;
        //  }
     */
-}
+    }
 
 
 
