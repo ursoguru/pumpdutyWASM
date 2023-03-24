@@ -597,8 +597,9 @@
 
                     // pumpsChosenDisplayed[pint - 1].v380 = "n/a";
                     pumpsChosenDisplayed[eint].v220 = "n/a";
-                    // pumpsChosenDisplayed[eint].v220 = pumpsChosen.v220;
+
                     pumpsChosen = choisePumps(boosterPerformanceAll, boosterProductsAll, e.id);
+                    pumpsChosenDisplayed[eint].v220 = pumpsChosen.v220; //for debugging
 
                     pumpsChosenDisplayed[eint].model = pumpsChosen.model;
                     switch (pumpsChosen.model)
@@ -606,34 +607,34 @@
                         case "SS":
                             pumpsChosenDisplayed[eint].vmsPump = "SS.jpg";
                             if (pumpSelections.application == "GeneralWaterDrainage(Continuous)" || pumpSelections.application == "WaterFeature(Continuous)") {
-                                pumpsChosenDisplayed[eint].v220 = pumpsChosen.v220;
+                                pumpsChosenDisplayed[eint].v220 = pumpsChosen.v220+"D"; //for debugging
                             }
                             break;
                         case "SQ":
                             pumpsChosenDisplayed[eint].vmsPump = "SQ.jpg";
                             if (pumpSelections.application == "LightDutyWaterDrainage(Intermittent)")
                             {
-                                pumpsChosenDisplayed[eint].v220 = pumpsChosen.v220;
+                                pumpsChosenDisplayed[eint].v220 = pumpsChosen.v220 + "D"; //for debugging
                             }
                             break;
                         case "SQB":
                             if (pumpSelections.application == "LightDutyDirtyWaterDrainage(Intermittent)")
                             {
-                                pumpsChosenDisplayed[eint].v220 = pumpsChosen.v220;
+                                pumpsChosenDisplayed[eint].v220 = pumpsChosen.v220 + "D"; //for debugging
                             }
                             pumpsChosenDisplayed[eint].vmsPump = "SQB.jpg";
                             break;
                         case "SSWC":
                             if (pumpSelections.application == "DirtyWaterDrainage(Continuous)")
                             {
-                                pumpsChosenDisplayed[eint].v220 = pumpsChosen.v220;
+                                pumpsChosenDisplayed[eint].v220 = pumpsChosen.v220 + "D"; //for debugging
                             }
                             pumpsChosenDisplayed[eint].vmsPump = "SSWV.jpg";
                             break;
                         case "SSWV":
                             if (pumpSelections.application == "Sewage(Continuous)")
                             {
-                                pumpsChosenDisplayed[eint].v220 = pumpsChosen.v220;
+                                pumpsChosenDisplayed[eint].v220 = pumpsChosen.v220 + "D"; //for debugging
                             }
                             pumpsChosenDisplayed[eint].vmsPump = "SSWV.jpg";
                             break;
@@ -785,7 +786,7 @@
             float B20;
 
 
-            switch (pumpSelections.application)
+          /*  switch (pumpSelections.application)
             {
                 case "Static (pop-up/rigid rizer)":
                     C5 = 0.7F;
@@ -808,12 +809,12 @@
                     D5 = 20.0F;
                     break;
                 default:
-                    // RDB13 = 2.0F;
+                    
                     break;
-            }
+            }*/
 
-            B14 = (float)pumpSelections.apartments;
-            B15 = (float)(pumpSelections.sinks + pumpSelections.dishwashers + pumpSelections.washingmachines + pumpSelections.showers + pumpSelections.bathtubs + pumpSelections.washbasins + pumpSelections.bidets) + RDC13;
+          //  B14 = (float)pumpSelections.apartments;
+          //  B15 = (float)(pumpSelections.sinks + pumpSelections.dishwashers + pumpSelections.washingmachines + pumpSelections.showers + pumpSelections.bathtubs + pumpSelections.washbasins + pumpSelections.bidets) + RDC13;
 
 
             /*   switch (pumpSelections.application)
@@ -825,7 +826,7 @@
                        pumpDuty.head = (float)pumpSelections.stories * 2.0F;
                        break;
                } */
-            switch (pumpSelections.application) //sub
+          /*  switch (pumpSelections.application) 
             {
                 case "1 x Flush tank / Cistern":
 
@@ -845,7 +846,7 @@
                     break;
             }
             B30 = ((float)(pumpSelections.sinks * 9 + pumpSelections.dishwashers * 10 + pumpSelections.washingmachines * 12 + pumpSelections.showers * 12 + pumpSelections.bathtubs * 15 + pumpSelections.washbasins * 6 + pumpSelections.bidets * 6) + RDB14) * (float)pumpSelections.apartments;
-            B31 = B23 * B30;
+            B31 = B23 * B30;*/
 
             pumpDuty.flow = pumpSelections.flow; //sub
 
