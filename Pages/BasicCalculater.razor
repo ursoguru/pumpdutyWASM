@@ -1,4 +1,4 @@
-﻿@page "/sub"
+﻿@page "/bas"
 @inject HttpClient Http
 @using System;
 @using System.Collections.Generic;
@@ -7,7 +7,7 @@
 @using System.Net.Http.Json;
 @using System.Threading;
 
-<PageTitle>Submersible Calculator</PageTitle>
+<PageTitle>Basic Calculator</PageTitle>
 
 
 <div class="container text-left">
@@ -16,7 +16,7 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th scope="col">Submersible Pump Duty:</th>
+                        <th scope="col">Basic Pump Duty:</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -27,12 +27,12 @@
                                 <tbody>
 
                                     <tr>
-                                        <th>Type of applications</th>
+                                        <th>Pipe Type</th>
                                         <td>
-                                            <select class="form-control" value="@pumpSelections.application" @onchange="@OnSelectapplication" style="width:240px">
-                                                @foreach (var application in applications)
+                                            <select class="form-control" value="@pumpSelections.pipeType" @onchange="@OnSelectpipeType" style="width:240px">
+                                                @foreach (var pipeType in pipeTypes)
                                                 {
-                                                    <option value=@application>@application</option>
+                                                    <option value=@pipeType>@pipeType</option>
                                                 }
                                             </select>
                                         </td>
@@ -188,17 +188,17 @@
                             {
                                 if (pumpsChosenDisplayed[i].v220 != "n/a")
                                 {
-                                                <tr>
-                                                   
-                                                    <td><a target="_blank" class="font-weight-bold link-dark" href=@pumpsChosenDisplayed[i].wordpressURL>@pumpsChosenDisplayed[i].model</a></td>
-                                                    <td>@pumpsChosenDisplayed[i].v380</td>
-                                                    <td>@pumpsChosenDisplayed[i].v220</td>
-                                                    <td>@pumpsChosenDisplayed[i].kw</td>
-                                                    <td><img src=@pumpsChosenDisplayed[i].vmsPump width="25" height="50"></td>
+                                    <tr>
+
+                                        <td><a target="_blank" class="font-weight-bold link-dark" href=@pumpsChosenDisplayed[i].wordpressURL>@pumpsChosenDisplayed[i].model</a></td>
+                                        <td>@pumpsChosenDisplayed[i].v380</td>
+                                        <td>@pumpsChosenDisplayed[i].v220</td>
+                                        <td>@pumpsChosenDisplayed[i].kw</td>
+                                        <td><img src=@pumpsChosenDisplayed[i].vmsPump width="25" height="50"></td>
 
 
 
-                                                </tr>
+                                    </tr>
                                 }
                             }
                         }
@@ -235,7 +235,7 @@
 
     string UrlForMe = "https://shackdemos.co.za/monitorportal/product-category/booster-products/vms8/vms8-20-range/";
 
-    protected override async Task OnInitializedAsync()
+ /*   protected override async Task OnInitializedAsync()
     {
         await fetchXML();
         calculateDuty();
@@ -248,7 +248,7 @@
         holdRaw = await Http.GetStringAsync("sample-data/submerpumps.xml");
 
 
-    }
+    } */
 
 
 
@@ -261,7 +261,7 @@
 
 
 
-    List<string> applications = new List<string>() { "GeneralWaterDrainage(Continuous)", "DirtyWaterDrainage(Continuous)", "Sewage(Continuous)","WaterFeature(Continuous)", "LightDutyWaterDrainage(Intermittent)", "LightDutyDirtyWaterDrainage(Intermittent)" };
+    List<string> pipeTypes = new List<string>() { "Steel Pipe (New)", "Steel Pipe (Old)", "UPVC Pipe", "Asbestos cement"};
 
 
     private int currentCount = 0;
@@ -279,16 +279,16 @@
     struct PumpSelections
     {
 
-        public string application;
+        public string pipeType;
         public float lift;
         public float pipewidth;
         public float pipelength;
         public float flow;
 
 
-        public PumpSelections(string applicationSystem, float pipeW, float pipeL, float pipeLift, float pipeFlow)
+        public PumpSelections(string pipeTypeSystem, float pipeW, float pipeL, float pipeLift, float pipeFlow)
         {
-            application = applicationSystem;
+            pipeType = pipeTypeSystem;
             pipelength = pipeL;
             pipewidth = pipeW;
             lift = pipeLift;
@@ -354,7 +354,7 @@
 
 
 
-    PumpSelections pumpSelections = new PumpSelections("Sewage(Continuous)", 40.0F, 70.0F, 5, 5);
+    PumpSelections pumpSelections = new PumpSelections("Steel Pipe (New)", 40.0F, 70.0F, 5, 5);
 
 
 
@@ -372,7 +372,7 @@
 
         calculateFlowHead();
 
-        Console.WriteLine(":"+pumpStuctCreated);
+        Console.WriteLine(":" + pumpStuctCreated);
 
 
         if (!pumpStuctCreated)
@@ -418,7 +418,8 @@
 
 #if DEBUG
 
-                for (int i = 0; i < 18; i++) {
+                for (int i = 0; i < 18; i++)
+                {
                     Console.WriteLine(models1[i].model_groups.Count() + " 0 " + models1[i].id);
 
                 }
@@ -491,7 +492,8 @@
                         case "SSR5":
                         case "SSR6":
                             pumpsChosenDisplayed[eint].vmsPump = "SS.jpg";
-                            if (pumpSelections.application == "GeneralWaterDrainage(Continuous)" || pumpSelections.application == "WaterFeature(Continuous)") {
+                            if (pumpSelections.pipeType == "GeneralWaterDrainage(Continuous)" || pumpSelections.pipeType == "WaterFeature(Continuous)")
+                            {
                                 pumpsChosenDisplayed[eint].v220 = pumpsChosen.v220;
                                 pumpsChosen.model = "SS";
                             }
@@ -499,7 +501,7 @@
                         case "SQR1":
                         case "SQR2":
                             pumpsChosenDisplayed[eint].vmsPump = "SQ.jpg";
-                            if (pumpSelections.application == "LightDutyWaterDrainage(Intermittent)")
+                            if (pumpSelections.pipeType == "LightDutyWaterDrainage(Intermittent)")
                             {
                                 pumpsChosenDisplayed[eint].v220 = pumpsChosen.v220;
                                 pumpsChosen.model = "SQ";
@@ -508,7 +510,7 @@
                         case "SQBR1":
                         case "SQBR2":
                         case "SQBR3":
-                            if (pumpSelections.application == "LightDutyDirtyWaterDrainage(Intermittent)")
+                            if (pumpSelections.pipeType == "LightDutyDirtyWaterDrainage(Intermittent)")
                             {
                                 pumpsChosenDisplayed[eint].v220 = pumpsChosen.v220;
                                 pumpsChosen.model = "SQB";
@@ -517,7 +519,7 @@
                             break;
                         case "SSWCR1":
                         case "SSWCR2":
-                            if (pumpSelections.application == "DirtyWaterDrainage(Continuous)")
+                            if (pumpSelections.pipeType == "DirtyWaterDrainage(Continuous)")
                             {
                                 pumpsChosenDisplayed[eint].v220 = pumpsChosen.v220;
                                 pumpsChosen.model = "SSWC";
@@ -529,7 +531,7 @@
                         case "SSWVR3":
                         case "SSWVR4":
                         case "SSWVR5":
-                            if (pumpSelections.application == "Sewage(Continuous)")
+                            if (pumpSelections.pipeType == "Sewage(Continuous)")
                             {
                                 pumpsChosenDisplayed[eint].v220 = pumpsChosen.v220;
                                 pumpsChosen.model = "SSWV";
@@ -538,7 +540,7 @@
                             break;
 
                         default:
-                         
+
                             break;
                     }
 
@@ -660,11 +662,11 @@
             B17 = pumpSelections.flow / 3.6F;
             B19 = pumpSelections.pipelength * (float)Math.Pow((B17 / (3.5888F * (float)Math.Pow(10, -6) * 140.0F * ((float)Math.Pow(pumpSelections.pipewidth, 2.63)))), 1.85);
             B20 = pumpSelections.lift;
-            pumpDuty.head = B19+B20; //sub
+            pumpDuty.head = B19 + B20; //sub
 
 #if DEBUG
 
-            Console.WriteLine("B17 "+B17);
+            Console.WriteLine("B17 " + B17);
             Console.WriteLine("B19 " + B19);
             Console.WriteLine("B20 " + B20);
 
@@ -679,9 +681,9 @@
 
 
 
-    void OnSelectapplication(ChangeEventArgs e)
+    void OnSelectpipeType(ChangeEventArgs e)
     {
-        pumpSelections.application = e.Value.ToString();
+        pumpSelections.pipeType = e.Value.ToString();
         calculateDuty();
     }
 
@@ -712,19 +714,9 @@
 
 
 
+}
 
-    /*   void OnSelect(ChangeEventArgs e)
-       {
-           selectedString = e.Value.ToString();
 
-           Console.WriteLine("The selected country is : " + selectedString);
-       }
-       //  private void IncrementCount()
-       //  {
-       //      currentCount++;
-       //  }
-    */
-    }
 
 
 
