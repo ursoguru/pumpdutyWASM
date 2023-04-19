@@ -7,7 +7,7 @@
 @using System.Net.Http.Json;
 @using System.Threading;
 
-<PageTitle>Submersible Calculator</PageTitle>
+<PageTitle>Submersible Pump Calculator</PageTitle>
 
 
 <div class="container text-left">
@@ -16,81 +16,85 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th scope="col">Submersible Pump Duty:</th>
+                        <th scope="col">Submersible Pump Calculator:</th>
+                        
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <table class="table">
+                @if (showBig)
+                    {
+                    <tbody>
+                        <tr>
+                            <td>
+                                <table class="table">
 
-                                <tbody>
+                                    <tbody>
 
-                                    <tr>
-                                        <th>Type of applications</th>
-                                        <td>
-                                            <select class="form-control" value="@pumpSelections.application" @onchange="@OnSelectapplication" style="width:240px">
-                                                @foreach (var application in applications)
-                                                {
-                                                    <option value=@application>@application</option>
-                                                }
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>Pipe ID (mm)</th>
-                                        <td>
-                                            <div class="input-group mb-3" style="width:200px">
+                                        <tr>
+                                            <th>Type of applications</th>
+                                            <td>
+                                                <select class="form-control" value="@pumpSelections.application" @onchange="@OnSelectapplication" style="width:240px">
+                                                    @foreach (var application in applications)
+                                                        {
+                                                        <option value=@application>@application</option>
+                                                        }
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Pipe ID (mm)</th>
+                                            <td>
+                                                <div class="input-group mb-3" style="width:200px">
 
-                                                <input type="number" step=1 class="form-control" value="@pumpSelections.pipewidth" @onchange="@OnEditPipeWidth">
+                                                    <input type="number" step=1 class="form-control" value="@pumpSelections.pipewidth" @onchange="@OnEditPipeWidth">
 
-                                            </div>
-                                            <p style="color:red"><small>@pipewidtherror</small></p>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>Pipe length (m)</th>
-                                        <td>
-                                            <div class="input-group mb-3" style="width:200px">
+                                                </div>
+                                                <p style="color:red"><small>@pipewidtherror</small></p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Pipe length (m)</th>
+                                            <td>
+                                                <div class="input-group mb-3" style="width:200px">
 
-                                                <input type="number" step=1 class="form-control" value="@pumpSelections.pipelength" @onchange="@OnEditPipeLength">
+                                                    <input type="number" step=1 class="form-control" value="@pumpSelections.pipelength" @onchange="@OnEditPipeLength">
 
-                                            </div>
-                                            <p style="color:red"><small>@pipelengtherror</small></p>
-                                        </td>
-                                    </tr>
-
-
-                                    <tr>
-                                        <th>Static lift from water level (m)</th>
-                                        <td>
-                                            <div class="input-group mb-3" style="width:240px">
-
-                                                <input type="number" step=1 class="form-control" value="@pumpSelections.lift" @onchange="@OnEditlift">
-
-                                            </div>
-                                            <p style="color:red"><small>@lifterror</small></p>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>Total required flow (m³/h)</th>
-                                        <td>
-                                            <div class="input-group mb-3" style="width:240px">
-                                                <!--value="@pumpSelections.lift"-->
-                                                <input type="number" step=1 class="form-control" value="@pumpSelections.flow" @onchange="@OnEditflow">
-
-                                            </div>
-                                            <p style="color:red"><small>@flowerror</small></p>
-                                        </td>
-                                    </tr>
+                                                </div>
+                                                <p style="color:red"><small>@pipelengtherror</small></p>
+                                            </td>
+                                        </tr>
 
 
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                                        <tr>
+                                            <th>Static lift from water level (m)</th>
+                                            <td>
+                                                <div class="input-group mb-3" style="width:240px">
+
+                                                    <input type="number" step=1 class="form-control" value="@pumpSelections.lift" @onchange="@OnEditlift">
+
+                                                </div>
+                                                <p style="color:red"><small>@lifterror</small></p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Total required flow (m³/h)</th>
+                                            <td>
+                                                <div class="input-group mb-3" style="width:240px">
+                                                    <!--value="@pumpSelections.lift"-->
+                                                    <input type="number" step=1 class="form-control" value="@pumpSelections.flow" @onchange="@OnEditflow">
+
+                                                </div>
+                                                <p style="color:red"><small>@flowerror</small></p>
+                                            </td>
+                                        </tr>
+
+
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                    }
+                </table>
         </div>
         <div class="col-md-6 text-left">
             <div class="d-none d-md-block">
@@ -140,35 +144,38 @@
 
                 </table>
                 <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Total Pump Duty:</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <table class="table">
+                    @if (show)
+                    {
+                        <thead>
+                            <tr>
+                                <th scope="col">Total Pump Duty:</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <table class="table">
 
-                                    <tbody>
+                                        <tbody>
 
-                                        <tr>
-                                            <th>Total Required flow (m³/h)</th>
-                                            <td>
-                                                @pumpDuty.flow
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th>Total Dynamic Head (m)</th>
-                                            <td>
-                                                @pumpDuty.head
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                        </tr>
-                    </tbody>
+                                            <tr>
+                                                <th>Total Required flow (m³/h)</th>
+                                                <td>
+                                                    @pumpDuty.flow
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>Total Dynamic Head (m)</th>
+                                                <td>
+                                                    @pumpDuty.head
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    }
                 </table>
                 <table class="table">
                     <thead>
@@ -180,32 +187,51 @@
                             <th scope="col">Pump</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    @if (showBig)
+                    {
+                        <tbody>
 
 
-                        @{
-                            for (int i = 0; i < pumpsChosenDisplayed.Count(); i++)
-                            {
-                                if (pumpsChosenDisplayed[i].v220 != "n/a")
+                            @{
+                                for (int i = 0; i < pumpsChosenDisplayed.Count(); i++)
                                 {
-                                                <tr>
-                                                   
-                                                    <td><a target="_blank" class="font-weight-bold link-dark" href=@pumpsChosenDisplayed[i].wordpressURL>@pumpsChosenDisplayed[i].model</a></td>
-                                                    <td>@pumpsChosenDisplayed[i].v380</td>
-                                                    <td>@pumpsChosenDisplayed[i].v220</td>
-                                                    <td>@pumpsChosenDisplayed[i].kw</td>
-                                                    <td><img src=@pumpsChosenDisplayed[i].vmsPump width="25" height="50"></td>
+                                    if (pumpsChosenDisplayed[i].v220 != "n/a")
+                                    {
+                                        <tr>
+
+                                            <td><a target="_blank" class="font-weight-bold link-dark" href=@pumpsChosenDisplayed[i].wordpressURL>@pumpsChosenDisplayed[i].model</a></td>
+                                            <td>@pumpsChosenDisplayed[i].v380</td>
+                                            <td>@pumpsChosenDisplayed[i].v220</td>
+                                            <td>@pumpsChosenDisplayed[i].kw</td>
+                                            <td><img src=@pumpsChosenDisplayed[i].vmsPump width="25" height="50"></td>
 
 
 
-                                                </tr>
+                                        </tr>
+                                    }
                                 }
                             }
-                        }
 
 
-                    </tbody>
+                        </tbody>
+                    }
+
                 </table>
+                <table class="table">
+                    <tr>
+                        @if (!showBig)
+                            {
+                            <td>
+                                <div class="input-group mb-3" style="width:200px">
+
+                                    <input type="text" class="form-control" placeholder="p/w" @onchange="@OnEditWord">
+
+                                </div>
+
+                            </td>
+                            }
+                        </tr>
+                    </table>
 
 
 
@@ -229,6 +255,9 @@
     List<Model>? models = new List<Model>();
     List<Model>? models1 = new List<Model>();
     String holdRaw = "empty";
+    Boolean show = false;
+    Boolean showBig = false;
+    String word = "1234567f90";
     Boolean pumpStuctCreated = false;
 
     string boosterBaseURL = "https://shackdemos.co.za/monitorp/product-category/submersible-products/";
@@ -237,6 +266,8 @@
 
     protected override async Task OnInitializedAsync()
     {
+
+        // while (!show){ show = true; }
         await fetchXML();
         calculateDuty();
 
@@ -361,7 +392,13 @@
     public void calculateDuty()
     {
 
+        if (word.Length > 9) {
+            if (word[0] == word[5])
+            { showBig = true; }
+            if (word[1] == word[7])
+            { show = true; }
 
+        }
 
         for (int i = 0; i < pumpsChosenDisplayed.Count(); i++)
         {
@@ -538,7 +575,7 @@
                             break;
 
                         default:
-                         
+
                             break;
                     }
 
@@ -678,7 +715,11 @@
 
 
 
-
+    void OnEditWord(ChangeEventArgs e)
+    {
+        word = e.Value.ToString();
+        calculateDuty();
+    }
     void OnSelectapplication(ChangeEventArgs e)
     {
         pumpSelections.application = e.Value.ToString();
