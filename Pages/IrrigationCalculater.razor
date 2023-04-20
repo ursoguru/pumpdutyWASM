@@ -19,99 +19,8 @@
                         <th scope="col">Irrigation Pump Calculator:</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <table class="table">
-
-                                <tbody>
-                                
-                                    <tr>
-                                        <th>Type of Nozzles</th>
-                                        <td>
-                                            <select class="form-control" value="@pumpSelections.nozzle" @onchange="@OnSelectnozzle" style="width:240px">
-                                                @foreach (var nozzle in nozzles)
-                                                {
-                                                    <option value=@nozzle>@nozzle</option>
-                                                }
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    
-                                    <tr>
-                                        <th>Number of nozzels per zone</th>
-                                        <td>
-                                            <div class="input-group mb-3" style="width:240px">
-                                                <!--value="@pumpSelections.noNozzels"-->
-                                                <input type="number" step=1 class="form-control" value="@pumpSelections.noNozzels" @onchange="@OnEditnoNozzels">
-
-                                            </div>
-                                            <p style="color:red"><small>@noNozzelserror</small></p>
-                                        </td>
-                                    </tr>
-                                    
-
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="col-md-6 text-left">
-            <div class="d-none d-md-block">
-                <div class="box2"></div>
-
-                <!-- <p role="status">Total: @currentCount</p> -->
-
-            </div>
-            <div>
-                <!-- <table class="table">
-          @if (pumpDuty.velocity > 2.8F)
-          {
-              <tbody style="color:red">
-                  <tr>
-                      <th>
-                          Flow Velocity (m/s)
-
-                          <p><small>Do not exceed 2.8m/s - Increase Pipe NB</small></p>
-
-                      </th>
-                      <td>
-                          @pumpDuty.velocity
-
-                      </td>
-
-                  </tr>
-              </tbody>
-          }
-          else
-          {
-              <tbody style="color:green">
-                  <tr>
-                      <th>
-                          Flow Velocity (m/s)
-
-                          <p><small> </small></p>
-
-                      </th>
-                      <td>
-                          @pumpDuty.velocity
-
-                      </td>
-
-                  </tr>
-              </tbody>
-          }
-
-
-      </table>-->
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Total Pump Duty:</th>
-                        </tr>
-                    </thead>
+                @if (showBig)
+                    {
                     <tbody>
                         <tr>
                             <td>
@@ -120,22 +29,119 @@
                                     <tbody>
 
                                         <tr>
-                                            <th>Total Required flow (m³/h)</th>
+                                            <th>Type of Nozzles</th>
                                             <td>
-                                                @pumpDuty.flow
+                                                <select class="form-control" value="@pumpSelections.nozzle" @onchange="@OnSelectnozzle" style="width:240px">
+                                                    @foreach (var nozzle in nozzles)
+                                                        {
+                                                        <option value=@nozzle>@nozzle</option>
+                                                        }
+                                                </select>
                                             </td>
                                         </tr>
+
                                         <tr>
-                                            <th>Total Dynamic Head (m)</th>
+                                            <th>Number of nozzels per zone</th>
                                             <td>
-                                                @pumpDuty.head
+                                                <div class="input-group mb-3" style="width:240px">
+                                                    <!--value="@pumpSelections.noNozzels"-->
+                                                    <input type="number" step=1 class="form-control" value="@pumpSelections.noNozzels" @onchange="@OnEditnoNozzels">
+
+                                                </div>
+                                                <p style="color:red"><small>@noNozzelserror</small></p>
                                             </td>
                                         </tr>
+
+
                                     </tbody>
                                 </table>
                             </td>
                         </tr>
                     </tbody>
+                    }
+                </table>
+        </div>
+        <div class="col-md-6 text-left">
+            <!-- <div class="d-none d-md-block">
+     <div class="box2"></div>
+
+    <p role="status">Total: @currentCount</p>
+
+      </div>-->
+            <div>
+                <!-- <table class="table">
+            @if (pumpDuty.velocity > 2.8F)
+            {
+                <tbody style="color:red">
+                    <tr>
+                        <th>
+                            Flow Velocity (m/s)
+
+                            <p><small>Do not exceed 2.8m/s - Increase Pipe NB</small></p>
+
+                        </th>
+                        <td>
+                            @pumpDuty.velocity
+
+                        </td>
+
+                    </tr>
+                </tbody>
+            }
+            else
+            {
+                <tbody style="color:green">
+                    <tr>
+                        <th>
+                            Flow Velocity (m/s)
+
+                            <p><small> </small></p>
+
+                        </th>
+                        <td>
+                            @pumpDuty.velocity
+
+                        </td>
+
+                    </tr>
+                </tbody>
+            }
+
+
+        </table>-->
+                <table class="table">
+                    @if (show)
+                    {
+                        <thead>
+                            <tr>
+                                <th scope="col">Total Pump Duty:</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <table class="table">
+
+                                        <tbody>
+
+                                            <tr>
+                                                <th>Total Required flow (m³/h)</th>
+                                                <td>
+                                                    @pumpDuty.flow
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>Total Dynamic Head (m)</th>
+                                                <td>
+                                                    @pumpDuty.head
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    }
                 </table>
                 <table class="table">
                     <thead>
@@ -147,68 +153,87 @@
                             <th scope="col">Pump</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    @if (showBig)
+                    {
+                        <tbody>
 
 
-                        @{
-                            for (int i = 0; i < pumpsChosenDisplayed.Count(); i++)
-                            {
-                                if (pumpsChosenDisplayed[i].v380 != "n/a")
+                            @{
+                                for (int i = 0; i < pumpsChosenDisplayed.Count(); i++)
                                 {
-                                    <tr>
-                                        <!--<td>@pumpsChosenDisplayed[i].model</td>-->
-                                        <td><a target="_blank" class="font-weight-bold link-dark" href=@pumpsChosenDisplayed[i].wordpressURL>@pumpsChosenDisplayed[i].model</a></td>
-                                        <td>@pumpsChosenDisplayed[i].v380</td>
-                                        <td>@pumpsChosenDisplayed[i].v220</td>
-                                        <td>@pumpsChosenDisplayed[i].kw</td>
-                                        @{
-                                            if (pumpsChosenDisplayed[i].vmsPump)
-                                            //  if (pumpsChosenDisplayed[i].model == "VMS8")
-                                            {
-                                                <td><img src="vms1.jpg" width="25" height="50"></td>
+                                    if (pumpsChosenDisplayed[i].v380 != "n/a")
+                                    {
+                                        <tr>
+                                            <!--<td>@pumpsChosenDisplayed[i].model</td>-->
+                                            <td><a target="_blank" class="font-weight-bold link-dark" href=@pumpsChosenDisplayed[i].wordpressURL>@pumpsChosenDisplayed[i].model</a></td>
+                                            <td>@pumpsChosenDisplayed[i].v380</td>
+                                            <td>@pumpsChosenDisplayed[i].v220</td>
+                                            <td>@pumpsChosenDisplayed[i].kw</td>
+                                            @{
+                                                if (pumpsChosenDisplayed[i].vmsPump)
+                                                //  if (pumpsChosenDisplayed[i].model == "VMS8")
+                                                {
+                                                    <td><img src="vms1.jpg" width="25" height="50"></td>
+                                                }
+                                                else
+                                                {
+                                                    <td><img src="hsi1.jpg" width="50" height="50"></td>
+                                                }
                                             }
-                                            else
-                                            {
-                                                <td><img src="hsi1.jpg" width="50" height="50"></td>
-                                            }
-                                        }
 
-                                    </tr>
+                                        </tr>
+                                    }
                                 }
                             }
+                            <!--  <tr>
+                        <td>
+                            <img src="hsi1.jpg" width="50" height="50">
+                        </td>
+                        <td>
+                            <img src="vms1.jpg" width="25" height="50">
+                        </td>
+                        <td>
+                            <a target="_blank" class="font-weight-bold link-dark" href=@UrlForMe>link</a>
+
+
+                        </td>
+                        <td>
+                            <a href="https://shackdemos.co.za/monitorportal/" target="_blank">link</a>
+                        </td>
+                    </tr>
+
+                     -->
+
+                        </tbody>
+                    }
+                </table>
+                <table class="table">
+                    <tr>
+                        @if (!showBig)
+                        {
+                            <td>
+                                <div class="input-group mb-3" style="width:200px">
+
+                                    <input type="text" class="form-control" placeholder="p/w" @onchange="@OnEditWord">
+
+                                </div>
+
+                            </td>
                         }
-                        <!--  <tr>
-                <td>
-                    <img src="hsi1.jpg" width="50" height="50">
-                </td>
-                <td>
-                    <img src="vms1.jpg" width="25" height="50">
-                </td>
-                <td>
-                    <a target="_blank" class="font-weight-bold link-dark" href=@UrlForMe>link</a>
-
-
-                </td>
-                <td>
-                    <a href="https://shackdemos.co.za/monitorportal/" target="_blank">link</a>
-                </td>
-            </tr>
-
-             -->
-
-                    </tbody>
+                    </tr>
                 </table>
 
 
 
+
                 <!--          <h5>nozzle: @pumpSelections.nozzle</h5>
-           <h5>apartment: @pumpSelections.apartments</h5>
-           <h5>stories: @pumpSelections.stories</h5>
-           <h5>flow: @pumpDuty.flow</h5>
-           <h5>head: @pumpDuty.head</h5>
-           <h5>pipe width: @pumpSelections.noNozzels</h5>
-           <h5>pipe length: @pumpSelections.pipelength</h5>
-    -->
+               <h5>apartment: @pumpSelections.apartments</h5>
+               <h5>stories: @pumpSelections.stories</h5>
+               <h5>flow: @pumpDuty.flow</h5>
+               <h5>head: @pumpDuty.head</h5>
+               <h5>pipe width: @pumpSelections.noNozzels</h5>
+               <h5>pipe length: @pumpSelections.pipelength</h5>
+        -->
 
             </div>
 
@@ -230,6 +255,9 @@
     List<Model>? models = new List<Model>();
     List<Model>? models1 = new List<Model>();
     String holdRaw = "empty";
+    Boolean show = false;
+    Boolean showBig = false;
+    String word = "1234567f90";
     Boolean pumpStuctCreated = false;
 
     string boosterBaseURL = "https://shackdemos.co.za/monitorp/product-category/irrigation-booster-products/";
@@ -434,6 +462,18 @@
 
     public void calculateDuty()
     {
+        if (word.Length > 9)
+        {
+            if (word[0] == word[5] &&
+                word[2] == word[4] &&
+                word[3] == word[8])
+            {
+                showBig = true;
+                if (word[1] == word[7])
+                { show = true; }
+            }
+
+        }
 #if DEBUG
         // Console.WriteLine(holdRaw);
 #endif
@@ -855,6 +895,12 @@
        {
            calculateDuty();
        }*/
+
+    void OnEditWord(ChangeEventArgs e)
+    {
+        word = e.Value.ToString();
+        calculateDuty();
+    }
 
     void OnSelectApartments(ChangeEventArgs e)
     {

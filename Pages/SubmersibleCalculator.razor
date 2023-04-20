@@ -233,6 +233,8 @@
                         </tr>
                     </table>
 
+                
+
 
 
 
@@ -250,521 +252,525 @@
 
 @code {
 
-    XDocument xDocument = new XDocument();
+            XDocument xDocument = new XDocument();
 
-    List<Model>? models = new List<Model>();
-    List<Model>? models1 = new List<Model>();
-    String holdRaw = "empty";
-    Boolean show = false;
-    Boolean showBig = false;
-    String word = "1234567f90";
-    Boolean pumpStuctCreated = false;
+            List<Model>? models = new List<Model>();
+            List<Model>? models1 = new List<Model>();
+            String holdRaw = "empty";
+            Boolean show = false;
+            Boolean showBig = false;
+            String word = "1234567f90";
+            Boolean pumpStuctCreated = false;
 
-    string boosterBaseURL = "https://shackdemos.co.za/monitorp/product-category/submersible-products/";
+            string boosterBaseURL = "https://shackdemos.co.za/monitorp/product-category/submersible-products/";
 
-    string UrlForMe = "https://shackdemos.co.za/monitorportal/product-category/booster-products/vms8/vms8-20-range/";
+            string UrlForMe = "https://shackdemos.co.za/monitorportal/product-category/booster-products/vms8/vms8-20-range/";
 
     protected override async Task OnInitializedAsync()
-    {
-
-        // while (!show){ show = true; }
-        await fetchXML();
-        calculateDuty();
-
-    }
-
-    protected async Task fetchXML()
-    {
-
-        holdRaw = await Http.GetStringAsync("sample-data/submerpumps.xml");
-
-
-    }
-
-
-
-
-
-    public string lifterror = "";
-    public string flowerror = "";
-    public string pipelengtherror = "";
-    public string pipewidtherror = "";
-
-
-
-    List<string> applications = new List<string>() { "GeneralWaterDrainage(Continuous)", "DirtyWaterDrainage(Continuous)", "Sewage(Continuous)","WaterFeature(Continuous)", "LightDutyWaterDrainage(Intermittent)", "LightDutyDirtyWaterDrainage(Intermittent)" };
-
-
-    private int currentCount = 0;
-
-    struct PumpDuty
-    {
-        public float flow;
-        public float head;
-        public float velocity;
-    }
-
-    PumpDuty pumpDuty = new PumpDuty();
-
-
-    struct PumpSelections
-    {
-
-        public string application;
-        public float lift;
-        public float pipewidth;
-        public float pipelength;
-        public float flow;
-
-
-        public PumpSelections(string applicationSystem, float pipeW, float pipeL, float pipeLift, float pipeFlow)
         {
-            application = applicationSystem;
-            pipelength = pipeL;
-            pipewidth = pipeW;
-            lift = pipeLift;
-            flow = pipeFlow;
 
-        }
-    }
-
-    struct PumpsChosenDisplayed
-    {
-        public string model;
-        public string v380;
-        public string v220;
-        public string kw;
-        public string vmsPump;
-        public string wordpressURL;
-    }
-
-    PumpsChosenDisplayed[] pumpsChosenDisplayed = new PumpsChosenDisplayed[20];
-
-
-    struct PumpsChosen
-    {
-        public string model;
-        public string v380;
-        public string v220;
-        public string kw;
-    }
-
-
-
-    PumpsChosen pumpsChosen = new PumpsChosen();
-
-
-
-
-
-
-
-    public class Model
-    {
-        public string id { get; set; }
-        public ModelGroup[] model_groups { get; set; }
-    }
-
-    public class ModelGroup
-    {
-        public string id { get; set; }
-        public string v380 { get; set; }
-        public string v220 { get; set; }
-        public float kw { get; set; }
-        public Flow[] flows { get; set; }
-    }
-
-    public class Flow
-    {
-        public float m3h { get; set; }
-        public float head { get; set; }
-    }
-
-
-
-
-
-
-    PumpSelections pumpSelections = new PumpSelections("Sewage(Continuous)", 40.0F, 70.0F, 5, 5);
-
-
-
-    public void calculateDuty()
-    {
-
-        if (word.Length > 9) {
-            if (word[0] == word[5])
-            { showBig = true; }
-            if (word[1] == word[7])
-            { show = true; }
+            // while (!show){ show = true; }
+            await fetchXML();
+            calculateDuty();
 
         }
 
-        for (int i = 0; i < pumpsChosenDisplayed.Count(); i++)
+        protected async Task fetchXML()
         {
-            pumpsChosenDisplayed[i].v220 = "n/a";
+
+            holdRaw = await Http.GetStringAsync("sample-data/submerpumps.xml");
+
+
         }
 
 
 
-        calculateFlowHead();
-
-        Console.WriteLine(":"+pumpStuctCreated);
 
 
-        if (!pumpStuctCreated)
+        public string lifterror = "";
+        public string flowerror = "";
+        public string pipelengtherror = "";
+        public string pipewidtherror = "";
+
+
+
+        List<string> applications = new List<string>() { "GeneralWaterDrainage(Continuous)", "DirtyWaterDrainage(Continuous)", "Sewage(Continuous)","WaterFeature(Continuous)", "LightDutyWaterDrainage(Intermittent)", "LightDutyDirtyWaterDrainage(Intermittent)" };
+
+
+        private int currentCount = 0;
+
+        struct PumpDuty
         {
-            if (holdRaw != "empty")
+            public float flow;
+            public float head;
+            public float velocity;
+        }
+
+        PumpDuty pumpDuty = new PumpDuty();
+
+
+        struct PumpSelections
+        {
+
+            public string application;
+            public float lift;
+            public float pipewidth;
+            public float pipelength;
+            public float flow;
+
+
+            public PumpSelections(string applicationSystem, float pipeW, float pipeL, float pipeLift, float pipeFlow)
             {
-                TextReader tr = new StringReader(holdRaw);
-                XDocument xDocument = XDocument.Load(tr);
+                application = applicationSystem;
+                pipelength = pipeL;
+                pipewidth = pipeW;
+                lift = pipeLift;
+                flow = pipeFlow;
 
-                models1 =
-                     (
-                        from e in xDocument.Root.Elements("model")
+            }
+        }
 
-                        select new Model
+        struct PumpsChosenDisplayed
+        {
+            public string model;
+            public string v380;
+            public string v220;
+            public string kw;
+            public string vmsPump;
+            public string wordpressURL;
+        }
+
+        PumpsChosenDisplayed[] pumpsChosenDisplayed = new PumpsChosenDisplayed[20];
+
+
+        struct PumpsChosen
+        {
+            public string model;
+            public string v380;
+            public string v220;
+            public string kw;
+        }
+
+
+
+        PumpsChosen pumpsChosen = new PumpsChosen();
+
+
+
+
+
+
+
+        public class Model
+        {
+            public string id { get; set; }
+            public ModelGroup[] model_groups { get; set; }
+        }
+
+        public class ModelGroup
+        {
+            public string id { get; set; }
+            public string v380 { get; set; }
+            public string v220 { get; set; }
+            public float kw { get; set; }
+            public Flow[] flows { get; set; }
+        }
+
+        public class Flow
+        {
+            public float m3h { get; set; }
+            public float head { get; set; }
+        }
+
+
+
+
+
+
+        PumpSelections pumpSelections = new PumpSelections("Sewage(Continuous)", 40.0F, 70.0F, 5, 5);
+
+
+
+        public void calculateDuty()
+        {
+
+            if (word.Length > 9) {
+                if (word[0] == word[5] &&
+                    word[2] == word[4] &&
+                    word[3] == word[8])
+                {
+                    showBig = true;
+                    if (word[1] == word[7])
+                    { show = true; }
+                }
+
+            }
+
+            for (int i = 0; i < pumpsChosenDisplayed.Count(); i++)
+            {
+                pumpsChosenDisplayed[i].v220 = "n/a";
+            }
+
+
+
+            calculateFlowHead();
+
+            Console.WriteLine(":"+pumpStuctCreated);
+
+
+            if (!pumpStuctCreated)
+            {
+                if (holdRaw != "empty")
+                {
+                    TextReader tr = new StringReader(holdRaw);
+                    XDocument xDocument = XDocument.Load(tr);
+
+                    models1 =
+                         (
+                            from e in xDocument.Root.Elements("model")
+
+                            select new Model
+                            {
+
+                                id = (string)e.Element("id"),
+                                model_groups =
+                        (
+                            from p in e.Elements("model_groups")
+                            select new ModelGroup
+                            {
+                                id = (string)p.Element("id"),
+                                v380 = (string)p.Element("v380"),
+                                v220 = (string)p.Element("v220"),
+                                kw = (float)p.Element("kw"),
+                                flows =
+                                (
+                                    from r in p.Elements("flow")
+                                    select new Flow
+                                    {
+                                        m3h = (float)r.Element("m3h"),
+                                        head = (float)r.Element("head")
+                                    }
+                                ).ToArray()
+
+                            }
+                        ).ToArray()
+
+
+
+                            }).ToList();
+
+#if DEBUG
+
+                    for (int i = 0; i < 18; i++) {
+                        Console.WriteLine(models1[i].model_groups.Count() + " 0 " + models1[i].id);
+
+                    }
+#endif
+
+
+                    pumpStuctCreated = true;
+#if DEBUG
+                    Console.WriteLine("pump structure created");
+#endif
+                }
+            }
+
+            int pint = 0;
+            int rint = 0;
+            int eint = 0;
+
+
+            if (models1 != null)
+            {
+
+                if (models1.Count() != 0)
+                {
+#if DEBUG
+                    Console.WriteLine("going into booster");
+#endif
+
+
+                    foreach (Model e in models1)
+                    {
+                        // Console.WriteLine(e.id);
+                        // float[,] boosterPerformanceAll = new float[models1[eint].model_groups.Count() + 1, models1[eint].model_groups[pint].flows.Count()];
+                        float[,] boosterPerformanceAll = new float[models1[eint].model_groups.Count() + 1, 12]; //above does not work used first flow count - luvky it worked in other calculators ??
+                        string[,] boosterProductsAll = new string[models1[eint].model_groups.Count(), 3];
+                        foreach (ModelGroup p in e.model_groups)
                         {
-
-                            id = (string)e.Element("id"),
-                            model_groups =
-                    (
-                        from p in e.Elements("model_groups")
-                        select new ModelGroup
-                        {
-                            id = (string)p.Element("id"),
-                            v380 = (string)p.Element("v380"),
-                            v220 = (string)p.Element("v220"),
-                            kw = (float)p.Element("kw"),
-                            flows =
-                            (
-                                from r in p.Elements("flow")
-                                select new Flow
+                            // Console.WriteLine(p.id);
+                            foreach (Flow r in p.flows)
+                            {
+                                // Console.WriteLine(r.head);
+                                if (pint == 0)
                                 {
-                                    m3h = (float)r.Element("m3h"),
-                                    head = (float)r.Element("head")
+                                    boosterPerformanceAll[0, rint] = r.m3h;
                                 }
-                            ).ToArray()
+                                boosterPerformanceAll[pint + 1, rint] = r.head;
 
+                                if (rint < models1[eint].model_groups[pint].flows.Count() - 1) { rint++; }
+                            }
+                            // Console.WriteLine(p.v380);
+                            boosterProductsAll[pint, 0] = p.v380;
+                            boosterProductsAll[pint, 1] = p.v220;
+                            boosterProductsAll[pint, 2] = p.kw.ToString();
+                            pint++;
+                            rint = 0;
                         }
-                    ).ToArray()
+
+                        // pumpsChosenDisplayed[pint - 1].v380 = "n/a";
+                        pumpsChosenDisplayed[eint].v220 = "n/a";
+
+                        pumpsChosen = choisePumps(boosterPerformanceAll, boosterProductsAll, e.id);
+                        //   pumpsChosenDisplayed[eint].v220 = pumpsChosen.v220; //for debugging
 
 
-
-                        }).ToList();
-
-#if DEBUG
-
-                for (int i = 0; i < 18; i++) {
-                    Console.WriteLine(models1[i].model_groups.Count() + " 0 " + models1[i].id);
-
-                }
-#endif
-
-
-                pumpStuctCreated = true;
-#if DEBUG
-                Console.WriteLine("pump structure created");
-#endif
-            }
-        }
-
-        int pint = 0;
-        int rint = 0;
-        int eint = 0;
-
-
-        if (models1 != null)
-        {
-
-            if (models1.Count() != 0)
-            {
-#if DEBUG
-                Console.WriteLine("going into booster");
-#endif
-
-
-                foreach (Model e in models1)
-                {
-                    // Console.WriteLine(e.id);
-                    // float[,] boosterPerformanceAll = new float[models1[eint].model_groups.Count() + 1, models1[eint].model_groups[pint].flows.Count()];
-                    float[,] boosterPerformanceAll = new float[models1[eint].model_groups.Count() + 1, 12]; //above does not work used first flow count - luvky it worked in other calculators ??
-                    string[,] boosterProductsAll = new string[models1[eint].model_groups.Count(), 3];
-                    foreach (ModelGroup p in e.model_groups)
-                    {
-                        // Console.WriteLine(p.id);
-                        foreach (Flow r in p.flows)
+                        switch (pumpsChosen.model)
                         {
-                            // Console.WriteLine(r.head);
-                            if (pint == 0)
-                            {
-                                boosterPerformanceAll[0, rint] = r.m3h;
-                            }
-                            boosterPerformanceAll[pint + 1, rint] = r.head;
+                            case "SSR1":
+                            case "SSR2":
+                            case "SSR3":
+                            case "SSR4":
+                            case "SSR5":
+                            case "SSR6":
+                                pumpsChosenDisplayed[eint].vmsPump = "SS.jpg";
+                                if (pumpSelections.application == "GeneralWaterDrainage(Continuous)" || pumpSelections.application == "WaterFeature(Continuous)") {
+                                    pumpsChosenDisplayed[eint].v220 = pumpsChosen.v220;
+                                    pumpsChosen.model = "SS";
+                                }
+                                break;
+                            case "SQR1":
+                            case "SQR2":
+                                pumpsChosenDisplayed[eint].vmsPump = "SQ.jpg";
+                                if (pumpSelections.application == "LightDutyWaterDrainage(Intermittent)")
+                                {
+                                    pumpsChosenDisplayed[eint].v220 = pumpsChosen.v220;
+                                    pumpsChosen.model = "SQ";
+                                }
+                                break;
+                            case "SQBR1":
+                            case "SQBR2":
+                            case "SQBR3":
+                                if (pumpSelections.application == "LightDutyDirtyWaterDrainage(Intermittent)")
+                                {
+                                    pumpsChosenDisplayed[eint].v220 = pumpsChosen.v220;
+                                    pumpsChosen.model = "SQB";
+                                }
+                                pumpsChosenDisplayed[eint].vmsPump = "SQB.jpg";
+                                break;
+                            case "SSWCR1":
+                            case "SSWCR2":
+                                if (pumpSelections.application == "DirtyWaterDrainage(Continuous)")
+                                {
+                                    pumpsChosenDisplayed[eint].v220 = pumpsChosen.v220;
+                                    pumpsChosen.model = "SSWC";
+                                }
+                                pumpsChosenDisplayed[eint].vmsPump = "SSWV.jpg";
+                                break;
+                            case "SSWVR1":
+                            case "SSWVR2":
+                            case "SSWVR3":
+                            case "SSWVR4":
+                            case "SSWVR5":
+                                if (pumpSelections.application == "Sewage(Continuous)")
+                                {
+                                    pumpsChosenDisplayed[eint].v220 = pumpsChosen.v220;
+                                    pumpsChosen.model = "SSWV";
+                                }
+                                pumpsChosenDisplayed[eint].vmsPump = "SSWV.jpg";
+                                break;
 
-                            if (rint < models1[eint].model_groups[pint].flows.Count() - 1) { rint++; }
+                            default:
+
+                                break;
                         }
-                        // Console.WriteLine(p.v380);
-                        boosterProductsAll[pint, 0] = p.v380;
-                        boosterProductsAll[pint, 1] = p.v220;
-                        boosterProductsAll[pint, 2] = p.kw.ToString();
-                        pint++;
-                        rint = 0;
+
+                        pumpsChosenDisplayed[eint].model = pumpsChosen.model;
+
+                        pumpsChosenDisplayed[eint].wordpressURL = boosterBaseURL + pumpsChosen.model + "/" + pumpsChosen.v220 + "-range/";
+
+                        pumpsChosenDisplayed[eint].v380 = pumpsChosen.v380;
+#if DEBUG
+                        Console.WriteLine("pumps chosen" + pumpsChosenDisplayed[eint].v220);
+#endif
+
+                        pumpsChosenDisplayed[eint].kw = pumpsChosen.kw;
+                        eint++;
+                        pint = 0;
+
                     }
 
-                    // pumpsChosenDisplayed[pint - 1].v380 = "n/a";
-                    pumpsChosenDisplayed[eint].v220 = "n/a";
-
-                    pumpsChosen = choisePumps(boosterPerformanceAll, boosterProductsAll, e.id);
-                    //   pumpsChosenDisplayed[eint].v220 = pumpsChosen.v220; //for debugging
-
-
-                    switch (pumpsChosen.model)
-                    {
-                        case "SSR1":
-                        case "SSR2":
-                        case "SSR3":
-                        case "SSR4":
-                        case "SSR5":
-                        case "SSR6":
-                            pumpsChosenDisplayed[eint].vmsPump = "SS.jpg";
-                            if (pumpSelections.application == "GeneralWaterDrainage(Continuous)" || pumpSelections.application == "WaterFeature(Continuous)") {
-                                pumpsChosenDisplayed[eint].v220 = pumpsChosen.v220;
-                                pumpsChosen.model = "SS";
-                            }
-                            break;
-                        case "SQR1":
-                        case "SQR2":
-                            pumpsChosenDisplayed[eint].vmsPump = "SQ.jpg";
-                            if (pumpSelections.application == "LightDutyWaterDrainage(Intermittent)")
-                            {
-                                pumpsChosenDisplayed[eint].v220 = pumpsChosen.v220;
-                                pumpsChosen.model = "SQ";
-                            }
-                            break;
-                        case "SQBR1":
-                        case "SQBR2":
-                        case "SQBR3":
-                            if (pumpSelections.application == "LightDutyDirtyWaterDrainage(Intermittent)")
-                            {
-                                pumpsChosenDisplayed[eint].v220 = pumpsChosen.v220;
-                                pumpsChosen.model = "SQB";
-                            }
-                            pumpsChosenDisplayed[eint].vmsPump = "SQB.jpg";
-                            break;
-                        case "SSWCR1":
-                        case "SSWCR2":
-                            if (pumpSelections.application == "DirtyWaterDrainage(Continuous)")
-                            {
-                                pumpsChosenDisplayed[eint].v220 = pumpsChosen.v220;
-                                pumpsChosen.model = "SSWC";
-                            }
-                            pumpsChosenDisplayed[eint].vmsPump = "SSWV.jpg";
-                            break;
-                        case "SSWVR1":
-                        case "SSWVR2":
-                        case "SSWVR3":
-                        case "SSWVR4":
-                        case "SSWVR5":
-                            if (pumpSelections.application == "Sewage(Continuous)")
-                            {
-                                pumpsChosenDisplayed[eint].v220 = pumpsChosen.v220;
-                                pumpsChosen.model = "SSWV";
-                            }
-                            pumpsChosenDisplayed[eint].vmsPump = "SSWV.jpg";
-                            break;
-
-                        default:
-
-                            break;
-                    }
-
-                    pumpsChosenDisplayed[eint].model = pumpsChosen.model;
-
-                    pumpsChosenDisplayed[eint].wordpressURL = boosterBaseURL + pumpsChosen.model + "/" + pumpsChosen.v220 + "-range/";
-
-                    pumpsChosenDisplayed[eint].v380 = pumpsChosen.v380;
+                }
+                InvokeAsync(() => { StateHasChanged(); });
+            }
 #if DEBUG
-                    Console.WriteLine("pumps chosen" + pumpsChosenDisplayed[eint].v220);
+            Console.WriteLine("line 600");
 #endif
 
-                    pumpsChosenDisplayed[eint].kw = pumpsChosen.kw;
-                    eint++;
-                    pint = 0;
+            PumpsChosen choisePumps(float[,] perf, string[,] prod, string model)
+            {
+#if DEBUG
+                Console.WriteLine("going into choisePumps");
 
+
+#endif
+                PumpsChosen returnStrut = new PumpsChosen();
+                returnStrut.model = model;
+
+
+
+                returnStrut.v380 = "n/a";
+                returnStrut.v220 = "n/a";
+                returnStrut.kw = "n/a";
+
+                int flowIndex = 500;
+                int modelIndex = 500;
+
+                if (pumpDuty.flow < perf[0, 0])
+                {
+#if DEBUG
+                    Console.WriteLine("flow is less than" + perf[0, 0]);
+#endif
+                    return returnStrut;
                 }
 
-            }
-            InvokeAsync(() => { StateHasChanged(); });
-        }
-#if DEBUG
-        Console.WriteLine("line 600");
-#endif
-
-        PumpsChosen choisePumps(float[,] perf, string[,] prod, string model)
-        {
-#if DEBUG
-            Console.WriteLine("going into choisePumps");
-
-
-#endif
-            PumpsChosen returnStrut = new PumpsChosen();
-            returnStrut.model = model;
-
-
-
-            returnStrut.v380 = "n/a";
-            returnStrut.v220 = "n/a";
-            returnStrut.kw = "n/a";
-
-            int flowIndex = 500;
-            int modelIndex = 500;
-
-            if (pumpDuty.flow < perf[0, 0])
-            {
-#if DEBUG
-                Console.WriteLine("flow is less than" + perf[0, 0]);
-#endif
-                return returnStrut;
-            }
-
-            if (pumpDuty.head < perf[0, perf.GetLength(1) - 1])
-            {
-#if DEBUG
-                Console.WriteLine("duty is less than" + perf[1, perf.GetLength(1) - 1]);
-#endif
-                return returnStrut;
-            }
-
-            for (int j = 0; j < perf.GetLength(1); j++)
-            {
-
-                if (pumpDuty.flow <= perf[0, j])
+                if (pumpDuty.head < perf[0, perf.GetLength(1) - 1])
                 {
-                    flowIndex = j;
-                    break;
+#if DEBUG
+                    Console.WriteLine("duty is less than" + perf[1, perf.GetLength(1) - 1]);
+#endif
+                    return returnStrut;
                 }
 
-
-
-            }
-
-            if (flowIndex < 500)
-            {
-
-                for (int i = 1; i < perf.GetLength(0); i++)
-
+                for (int j = 0; j < perf.GetLength(1); j++)
                 {
 
-                    if (pumpDuty.head <= perf[i, flowIndex])
+                    if (pumpDuty.flow <= perf[0, j])
                     {
-                        modelIndex = i - 1;
+                        flowIndex = j;
                         break;
                     }
+
+
+
                 }
 
-                if (modelIndex < 500)
+                if (flowIndex < 500)
                 {
-                    returnStrut.v380 = prod[modelIndex, 0];
-                    returnStrut.v220 = prod[modelIndex, 1];
-                    returnStrut.kw = prod[modelIndex, 2];
+
+                    for (int i = 1; i < perf.GetLength(0); i++)
+
+                    {
+
+                        if (pumpDuty.head <= perf[i, flowIndex])
+                        {
+                            modelIndex = i - 1;
+                            break;
+                        }
+                    }
+
+                    if (modelIndex < 500)
+                    {
+                        returnStrut.v380 = prod[modelIndex, 0];
+                        returnStrut.v220 = prod[modelIndex, 1];
+                        returnStrut.kw = prod[modelIndex, 2];
+                    }
                 }
+
+                return returnStrut;
+
             }
 
-            return returnStrut;
-
-        }
-
-        void calculateFlowHead()
-        {
+            void calculateFlowHead()
+            {
 
 
 
-            //sub
-            float B17;
-            float B19;
-            float B20;
+                //sub
+                float B17;
+                float B19;
+                float B20;
 
 
 
 
-            pumpDuty.flow = pumpSelections.flow; //sub
+                pumpDuty.flow = pumpSelections.flow; //sub
 
 
 
 
-            //sub
-            B17 = pumpSelections.flow / 3.6F;
-            B19 = pumpSelections.pipelength * (float)Math.Pow((B17 / (3.5888F * (float)Math.Pow(10, -6) * 140.0F * ((float)Math.Pow(pumpSelections.pipewidth, 2.63)))), 1.85);
-            B20 = pumpSelections.lift;
-            pumpDuty.head = B19+B20; //sub
+                //sub
+                B17 = pumpSelections.flow / 3.6F;
+                B19 = pumpSelections.pipelength * (float)Math.Pow((B17 / (3.5888F * (float)Math.Pow(10, -6) * 140.0F * ((float)Math.Pow(pumpSelections.pipewidth, 2.63)))), 1.85);
+                B20 = pumpSelections.lift;
+                pumpDuty.head = B19+B20; //sub
 
 #if DEBUG
 
-            Console.WriteLine("B17 "+B17);
-            Console.WriteLine("B19 " + B19);
-            Console.WriteLine("B20 " + B20);
+                Console.WriteLine("B17 "+B17);
+                Console.WriteLine("B19 " + B19);
+                Console.WriteLine("B20 " + B20);
 
 #endif
 
-            pumpDuty.velocity = B17 * 1000.0F / (3.142F / 4.0F * (float)Math.Pow(pumpSelections.pipewidth, 2)); //sub
+                pumpDuty.velocity = B17 * 1000.0F / (3.142F / 4.0F * (float)Math.Pow(pumpSelections.pipewidth, 2)); //sub
+            }
+
+
         }
 
 
-    }
 
+        void OnEditWord(ChangeEventArgs e)
+        {
+            word = e.Value.ToString();
+            calculateDuty();
+        }
+        void OnSelectapplication(ChangeEventArgs e)
+        {
+            pumpSelections.application = e.Value.ToString();
+            calculateDuty();
+        }
 
-
-    void OnEditWord(ChangeEventArgs e)
-    {
-        word = e.Value.ToString();
-        calculateDuty();
-    }
-    void OnSelectapplication(ChangeEventArgs e)
-    {
-        pumpSelections.application = e.Value.ToString();
-        calculateDuty();
-    }
-
-    void OnEditlift(ChangeEventArgs e)
-    {
-        try { pumpSelections.lift = float.Parse(e.Value.ToString()); lifterror = ""; }
-        catch { lifterror = "ERROR: This value used to be " + pumpSelections.lift.ToString() + ".Please fix"; }
-        calculateDuty();
-    }
-    void OnEditflow(ChangeEventArgs e)
-    {
-        try { pumpSelections.flow = float.Parse(e.Value.ToString()); flowerror = ""; }
-        catch { flowerror = "ERROR: This value used to be " + pumpSelections.lift.ToString() + ".Please fix"; }
-        calculateDuty();
-    }
-    void OnEditPipeLength(ChangeEventArgs e)
-    {
-        try { pumpSelections.pipelength = float.Parse(e.Value.ToString()); pipelengtherror = ""; }
-        catch { pipelengtherror = "ERROR: This value used to be " + pumpSelections.pipelength.ToString() + ". Please fix"; }
-        calculateDuty();
-    }
-    void OnEditPipeWidth(ChangeEventArgs e)
-    {
-        try { pumpSelections.pipewidth = float.Parse(e.Value.ToString()); pipewidtherror = ""; }
-        catch { pipewidtherror = "ERROR: This value used to be " + pumpSelections.pipewidth.ToString() + ".Please fix"; }
-        calculateDuty();
-    }
+        void OnEditlift(ChangeEventArgs e)
+        {
+            try { pumpSelections.lift = float.Parse(e.Value.ToString()); lifterror = ""; }
+            catch { lifterror = "ERROR: This value used to be " + pumpSelections.lift.ToString() + ".Please fix"; }
+            calculateDuty();
+        }
+        void OnEditflow(ChangeEventArgs e)
+        {
+            try { pumpSelections.flow = float.Parse(e.Value.ToString()); flowerror = ""; }
+            catch { flowerror = "ERROR: This value used to be " + pumpSelections.lift.ToString() + ".Please fix"; }
+            calculateDuty();
+        }
+        void OnEditPipeLength(ChangeEventArgs e)
+        {
+            try { pumpSelections.pipelength = float.Parse(e.Value.ToString()); pipelengtherror = ""; }
+            catch { pipelengtherror = "ERROR: This value used to be " + pumpSelections.pipelength.ToString() + ". Please fix"; }
+            calculateDuty();
+        }
+        void OnEditPipeWidth(ChangeEventArgs e)
+        {
+            try { pumpSelections.pipewidth = float.Parse(e.Value.ToString()); pipewidtherror = ""; }
+            catch { pipewidtherror = "ERROR: This value used to be " + pumpSelections.pipewidth.ToString() + ".Please fix"; }
+            calculateDuty();
+        }
 
 
 
 
-    /*   void OnSelect(ChangeEventArgs e)
-       {
-           selectedString = e.Value.ToString();
+        /*   void OnSelect(ChangeEventArgs e)
+           {
+               selectedString = e.Value.ToString();
 
-           Console.WriteLine("The selected country is : " + selectedString);
-       }
-       //  private void IncrementCount()
-       //  {
-       //      currentCount++;
-       //  }
-    */
+               Console.WriteLine("The selected country is : " + selectedString);
+           }
+           //  private void IncrementCount()
+           //  {
+           //      currentCount++;
+           //  }
+        */
     }
 
 

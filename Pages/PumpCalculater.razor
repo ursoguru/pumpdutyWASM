@@ -19,187 +19,193 @@
                         <th scope="col">Booster Pump Calculator:</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <table class="table">
+                @if (showBig)
+                    {
+                    <tbody>
+                        <tr>
+                            <td>
+                                <table class="table">
 
-                                <tbody>
-                                    <!--
-    <tr>
-        <td>fred1234567890</td>
-        <td>fred1234567890</td>
-        <td>fred1234567890</td>
-        <td>fred</td>
+                                    <tbody>
+                                        <!--
+                            <tr>
+                                <td>fred1234567890</td>
+                                <td>fred1234567890</td>
+                                <td>fred1234567890</td>
+                                <td>fred</td>
 
-    </tr>-->
-                                    <tr>
-                                        <!--scope="row" colspan="3"-->
-                                        <th>Number of apartments</th>
-                                        <td>
-                                            <select class="form-control" value="@pumpSelections.apartments" @onchange="@OnSelectApartments" style="width:200px">
-                                                @foreach (var apartment in apartments)
-                                                {
-                                                    <option value=@apartment>@apartment</option>
-                                                }
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>Number of storeys</th>
-                                        <td>
-                                            <select class="form-control" value="@pumpSelections.stories" @onchange="@OnSelectStories" style="width:200px">
-                                                @foreach (var storey in stories)
-                                                {
-                                                    <option value=@storey>@storey</option>
-                                                }
-                                            </select>
-                                        </td>
-                                    </tr>
+                            </tr>-->
+                                        <tr>
+                                            <!--scope="row" colspan="3"-->
+                                            <th>Number of apartments</th>
+                                            <td>
+                                                <select class="form-control" value="@pumpSelections.apartments" @onchange="@OnSelectApartments" style="width:200px">
+                                                    @foreach (var apartment in apartments)
+                                                        {
+                                                        <option value=@apartment>@apartment</option>
+                                                        }
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Number of storeys</th>
+                                            <td>
+                                                <select class="form-control" value="@pumpSelections.stories" @onchange="@OnSelectStories" style="width:200px">
+                                                    @foreach (var storey in stories)
+                                                        {
+                                                        <option value=@storey>@storey</option>
+                                                        }
+                                                </select>
+                                            </td>
+                                        </tr>
 
-                                    <tr>
-                                        <th colspan="2" class="text-center">Delivery points</th>
-                                    </tr>
-                                    <tr>
-                                        <th>Sink</th>
-                                        <td>
-                                            <select class="form-control" value="@pumpSelections.sinks" @onchange="@OnSelectSinks" style="width:200px">
-                                                @foreach (var sink in sinks)
-                                                {
-                                                    <option value=@sink>@sink</option>
-                                                }
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>Dishwasher</th>
-                                        <td>
-                                            <select class="form-control" value="@pumpSelections.dishwashers" @onchange="@OnSelectDishwashers" style="width:200px">
-                                                @foreach (var dishwasher in dishwashers)
-                                                {
-                                                    <option value=@dishwasher>@dishwasher</option>
-                                                }
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>Washing Machines</th>
-                                        <td>
-                                            <select class="form-control" value="@pumpSelections.washingmachines" @onchange="@OnSelectWashingmachines" style="width:200px">
-                                                @foreach (var washingmachine in washingmachines)
-                                                {
-                                                    <option value=@washingmachine>@washingmachine</option>
-                                                }
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>Shower</th>
-                                        <td>
-                                            <select class="form-control" value="@pumpSelections.showers" @onchange="@OnSelectShowers" style="width:200px">
-                                                @foreach (var shower in showers)
-                                                {
-                                                    <option value=@shower>@shower</option>
-                                                }
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>Bathtub</th>
-                                        <td>
-                                            <select class="form-control" value="@pumpSelections.bathtubs" @onchange="@OnSelectBathtubs" style="width:200px">
-                                                @foreach (var bathtub in bathtubs)
-                                                {
-                                                    <option value=@bathtub>@bathtub</option>
-                                                }
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>Washbasin</th>
-                                        <td>
-                                            <select class="form-control" value="@pumpSelections.washbasins" @onchange="@OnSelectWashbasins" style="width:200px">
-                                                @foreach (var washbasin in washbasins)
-                                                {
-                                                    <option value=@washbasin>@washbasin</option>
-                                                }
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>Bidet</th>
-                                        <td>
-                                            <select class="form-control" value="@pumpSelections.bidets" @onchange="@OnSelectBidets" style="width:200px">
-                                                @foreach (var bidet in bidets)
-                                                {
-                                                    <option value=@bidet>@bidet</option>
-                                                }
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>Toilet system</th>
-                                        <td>
-                                            <select class="form-control" value="@pumpSelections.toilet" @onchange="@OnSelectToilet" style="width:200px">
-                                                @foreach (var toilet in toilets)
-                                                {
-                                                    <option value=@toilet>@toilet</option>
-                                                }
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th colspan="2" class="text-center">Friction Loss</th>
-                                    </tr>
-                                    <tr>
-                                        <th>Pipe Type</th>
-                                        <td>
-                                            <select class="form-control" value="@pumpSelections.pipe" @onchange="@OnSelectPipe" style="width:200px">
-                                                @foreach (var pipe in pipes)
-                                                {
-                                                    <option value=@pipe>@pipe</option>
-                                                }
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>Pipe NB (mm)</th>
-                                        <td>
-                                            <div class="input-group mb-3" style="width:200px">
-                                                <!--value="@pumpSelections.pipewidth"-->
-                                                <input type="number" step=1 class="form-control" value="@pumpSelections.pipewidth" @onchange="@OnEditPipeWidth">
+                                        <tr>
+                                            <th colspan="2" class="text-center">Delivery points</th>
+                                        </tr>
+                                        <tr>
+                                            <th>Sink</th>
+                                            <td>
+                                                <select class="form-control" value="@pumpSelections.sinks" @onchange="@OnSelectSinks" style="width:200px">
+                                                    @foreach (var sink in sinks)
+                                                        {
+                                                        <option value=@sink>@sink</option>
+                                                        }
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Dishwasher</th>
+                                            <td>
+                                                <select class="form-control" value="@pumpSelections.dishwashers" @onchange="@OnSelectDishwashers" style="width:200px">
+                                                    @foreach (var dishwasher in dishwashers)
+                                                        {
+                                                        <option value=@dishwasher>@dishwasher</option>
+                                                        }
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Washing Machines</th>
+                                            <td>
+                                                <select class="form-control" value="@pumpSelections.washingmachines" @onchange="@OnSelectWashingmachines" style="width:200px">
+                                                    @foreach (var washingmachine in washingmachines)
+                                                        {
+                                                        <option value=@washingmachine>@washingmachine</option>
+                                                        }
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Shower</th>
+                                            <td>
+                                                <select class="form-control" value="@pumpSelections.showers" @onchange="@OnSelectShowers" style="width:200px">
+                                                    @foreach (var shower in showers)
+                                                        {
+                                                        <option value=@shower>@shower</option>
+                                                        }
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Bathtub</th>
+                                            <td>
+                                                <select class="form-control" value="@pumpSelections.bathtubs" @onchange="@OnSelectBathtubs" style="width:200px">
+                                                    @foreach (var bathtub in bathtubs)
+                                                        {
+                                                        <option value=@bathtub>@bathtub</option>
+                                                        }
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Washbasin</th>
+                                            <td>
+                                                <select class="form-control" value="@pumpSelections.washbasins" @onchange="@OnSelectWashbasins" style="width:200px">
+                                                    @foreach (var washbasin in washbasins)
+                                                        {
+                                                        <option value=@washbasin>@washbasin</option>
+                                                        }
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Bidet</th>
+                                            <td>
+                                                <select class="form-control" value="@pumpSelections.bidets" @onchange="@OnSelectBidets" style="width:200px">
+                                                    @foreach (var bidet in bidets)
+                                                        {
+                                                        <option value=@bidet>@bidet</option>
+                                                        }
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Toilet system</th>
+                                            <td>
+                                                <select class="form-control" value="@pumpSelections.toilet" @onchange="@OnSelectToilet" style="width:200px">
+                                                    @foreach (var toilet in toilets)
+                                                        {
+                                                        <option value=@toilet>@toilet</option>
+                                                        }
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="2" class="text-center">Friction Loss</th>
+                                        </tr>
+                                        <tr>
+                                            <th>Pipe Type</th>
+                                            <td>
+                                                <select class="form-control" value="@pumpSelections.pipe" @onchange="@OnSelectPipe" style="width:200px">
+                                                    @foreach (var pipe in pipes)
+                                                        {
+                                                        <option value=@pipe>@pipe</option>
+                                                        }
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Pipe NB (mm)</th>
+                                            <td>
+                                                <div class="input-group mb-3" style="width:200px">
+                                                    <!--value="@pumpSelections.pipewidth"-->
+                                                    <input type="number" step=1 class="form-control" value="@pumpSelections.pipewidth" @onchange="@OnEditPipeWidth">
 
-                                            </div>
-                                            <p style="color:red"><small>@pipewidtherror</small></p>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>Pipe length (m)</th>
-                                        <td>
-                                            <div class="input-group mb-3" style="width:200px">
-                                                <!--value="@pumpSelections.pipelength"-->
-                                                <input type="number" step=1 class="form-control" value="@pumpSelections.pipelength" @onchange="@OnEditPipeLength">
+                                                </div>
+                                                <p style="color:red"><small>@pipewidtherror</small></p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Pipe length (m)</th>
+                                            <td>
+                                                <div class="input-group mb-3" style="width:200px">
+                                                    <!--value="@pumpSelections.pipelength"-->
+                                                    <input type="number" step=1 class="form-control" value="@pumpSelections.pipelength" @onchange="@OnEditPipeLength">
 
-                                            </div>
-                                            <p style="color:red"><small>@pipelengtherror</small></p>
-                                        </td>
-                                    </tr>
-                                    
-                                    
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                                                </div>
+                                                <p style="color:red"><small>@pipelengtherror</small></p>
+                                            </td>
+                                        </tr>
+
+
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                    }
+                </table>
         </div>
         <div class="col-md-6 text-left">
             <div class="d-none d-md-block">
-                <div class="box"></div>
+                @if (showBig)
+                    {
+                    <div class="box"></div>
 
-                <!-- <p role="status">Total: @currentCount</p> -->
-
-            </div>
+                    <!-- <p role="status">Total: @currentCount</p> -->
+                    }
+                </div>
+                
             <div>
                 <table class="table">
                     @if (pumpDuty.velocity > 2.8F)
@@ -208,9 +214,9 @@
                             <tr>
                                 <th>
                                     Flow Velocity (m/s)
-                                   
-                                        <p><small>Do not exceed 2.8m/s - Increase Pipe NB</small></p>
-                                    
+
+                                    <p><small>Do not exceed 2.8m/s - Increase Pipe NB</small></p>
+
                                 </th>
                                 <td>
                                     @pumpDuty.velocity
@@ -218,28 +224,32 @@
                                 </td>
 
                             </tr>
-                         </tbody>
-                            } else {
-                <tbody style="color:green">
-                    <tr>
-                        <th>
-                            Flow Velocity (m/s)
-
-                            <p><small> </small></p>
-
-                        </th>
-                        <td>
-                            @pumpDuty.velocity
-
-                        </td>
-
-                    </tr>
-                </tbody>
+                        </tbody>
                     }
-                            
+                    else
+                    {
+                        <tbody style="color:green">
+                            <tr>
+                                <th>
+                                    Flow Velocity (m/s)
 
-                    </table>
-                    <table class="table">
+                                    <p><small> </small></p>
+
+                                </th>
+                                <td>
+                                    @pumpDuty.velocity
+
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    }
+
+
+                </table>
+                <table class="table">
+                    @if (show)
+                        {
                         <thead>
                             <tr>
                                 <th scope="col">Total Pump Duty:</th>
@@ -269,17 +279,20 @@
                                 </td>
                             </tr>
                         </tbody>
+                        }
                     </table>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">Model</th>
-                                <th scope="col">380V</th>
-                                <th scope="col">220V</th>
-                                <th scope="col">kW</th>
-                                <th scope="col">Pump</th>
-                            </tr>
-                        </thead>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Model</th>
+                            <th scope="col">380V</th>
+                            <th scope="col">220V</th>
+                            <th scope="col">kW</th>
+                            <th scope="col">Pump</th>
+                        </tr>
+                    </thead>
+                    @if (showBig)
+                        {
                         <tbody>
 
 
@@ -307,41 +320,57 @@
                                             }
 
                                         </tr>
-                                    }
-                                }
+                                                    }
+                                                }
                             }
                             <!--  <tr>
-                    <td>
-                        <img src="hsi1.jpg" width="50" height="50">
-                    </td>
-                    <td>
-                        <img src="vms1.jpg" width="25" height="50">
-                    </td>
-                    <td>
-                        <a target="_blank" class="font-weight-bold link-dark" href=@UrlForMe>link</a>
+                <td>
+                    <img src="hsi1.jpg" width="50" height="50">
+                </td>
+                <td>
+                    <img src="vms1.jpg" width="25" height="50">
+                </td>
+                <td>
+                    <a target="_blank" class="font-weight-bold link-dark" href=@UrlForMe>link</a>
 
 
-                    </td>
-                    <td>
-                        <a href="https://shackdemos.co.za/monitorportal/" target="_blank">link</a>
-                    </td>
-                </tr>
+                </td>
+                <td>
+                    <a href="https://shackdemos.co.za/monitorportal/" target="_blank">link</a>
+                </td>
+            </tr>
 
-                 -->
+             -->
 
                         </tbody>
+                        }
                     </table>
 
+                <table class="table">
+                    <tr>
+                        @if (!showBig)
+                        {
+                            <td>
+                                <div class="input-group mb-3" style="width:200px">
+
+                                    <input type="text" class="form-control" placeholder="p/w" @onchange="@OnEditWord">
+
+                                </div>
+
+                            </td>
+                        }
+                    </tr>
+                </table>
 
 
-                    <!--          <h5>toilet: @pumpSelections.toilet</h5>
-               <h5>apartment: @pumpSelections.apartments</h5>
-               <h5>stories: @pumpSelections.stories</h5>
-               <h5>flow: @pumpDuty.flow</h5>
-               <h5>head: @pumpDuty.head</h5>
-               <h5>pipe width: @pumpSelections.pipewidth</h5>
-               <h5>pipe length: @pumpSelections.pipelength</h5>
-        -->
+                <!--          <h5>toilet: @pumpSelections.toilet</h5>
+           <h5>apartment: @pumpSelections.apartments</h5>
+           <h5>stories: @pumpSelections.stories</h5>
+           <h5>flow: @pumpDuty.flow</h5>
+           <h5>head: @pumpDuty.head</h5>
+           <h5>pipe width: @pumpSelections.pipewidth</h5>
+           <h5>pipe length: @pumpSelections.pipelength</h5>
+    -->
 
             </div>
 
@@ -358,16 +387,19 @@
 
 @code {
 
-        XDocument xDocument = new XDocument();
-        // StreamReader streamReader = new StreamReader(@"bosterpumps.xml");
-        List<Model>? models = new List<Model>();
-        List<Model>? models1 = new List<Model>();
-        String holdRaw = "empty";
-        Boolean pumpStuctCreated = false;
+    XDocument xDocument = new XDocument();
+    // StreamReader streamReader = new StreamReader(@"bosterpumps.xml");
+    List<Model>? models = new List<Model>();
+    List<Model>? models1 = new List<Model>();
+    String holdRaw = "empty";
+    Boolean show = false;
+    Boolean showBig = false;
+    String word = "1234567f90";
+    Boolean pumpStuctCreated = false;
 
-        string boosterBaseURL = "https://shackdemos.co.za/monitorp/product-category/irrigation-booster-products/";
+    string boosterBaseURL = "https://shackdemos.co.za/monitorp/product-category/irrigation-booster-products/";
 
-        string UrlForMe = "https://shackdemos.co.za/monitorportal/product-category/booster-products/vms8/vms8-20-range/";
+    string UrlForMe = "https://shackdemos.co.za/monitorportal/product-category/booster-products/vms8/vms8-20-range/";
 
     protected override async Task OnInitializedAsync()
     {
@@ -567,6 +599,18 @@
 
     public void calculateDuty()
     {
+        if (word.Length > 9)
+        {
+            if (word[0] == word[5] &&
+                word[2] == word[4] &&
+                word[3] == word[8])
+            {
+                showBig = true;
+                if (word[1] == word[7])
+                { show = true; }
+            }
+
+        }
 #if DEBUG
         // Console.WriteLine(holdRaw);
 #endif
@@ -981,6 +1025,12 @@
        {
            calculateDuty();
        }*/
+
+    void OnEditWord(ChangeEventArgs e)
+    {
+        word = e.Value.ToString();
+        calculateDuty();
+    }
 
     void OnSelectApartments(ChangeEventArgs e)
     {
